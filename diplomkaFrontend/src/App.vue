@@ -11,6 +11,8 @@
   export default {
     components: {Header},
     created() {
+      // set global cookie in component:
+      this.$cookies.set('JSESSIONID',null);
       this.$store.dispatch("fetchCurrentUser");
     },
   }

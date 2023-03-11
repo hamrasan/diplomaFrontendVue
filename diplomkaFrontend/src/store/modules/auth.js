@@ -24,7 +24,7 @@ export default {
     },
     actions: {
         async fetchCurrentUser(context) {
-            const user = await axios.get("/user");
+            const user = await axios.get("http://localhost:8080/user");
 
             context.commit("setUser", user.data);
         }

@@ -10,6 +10,7 @@ export default {
             return document.querySelector("meta[name=_csrf]").content;
         },
         currentUser() {
+            //console.log(this.$cookies.get("JSESSIONID"));
             return this.$store.state.auth.user;
         }
     }
