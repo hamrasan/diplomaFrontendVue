@@ -18,7 +18,7 @@ export default {
 </script>
 
 <template>
-    <header>
+    <header class="pb-4">
         <nav class="navbar fixed-top navbar-expand navbar-dark bg-dark">
             <a class="navbar-brand mx-3" href="/">
                 <span> Reiffeisen Bank app</span>

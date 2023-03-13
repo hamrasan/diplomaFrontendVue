@@ -1,19 +1,24 @@
 <template>
-  <Header/>
-  <div class="p-4">
-    <router-view :key="$route.fullPath"></router-view>
-  </div>
+    <div>
+        <Header/>
+    </div>
+    <main>
+        <div class="p-5">
+                <router-view :key="$route.fullPath"></router-view>
+        </div>
+    </main>
 </template>
 
 <script>
   import Header from './components/Header.vue';
+  import router from "./router/router";
 
   export default {
     components: {Header},
     created() {
-      // set global cookie in component:
-      this.$cookies.set('JSESSIONID',null);
-      this.$store.dispatch("fetchCurrentUser");
+        if(this.$store.getters.isLogged() === false){
+            this.$store.dispatch("fetchCurrentUser");
+        }
     },
   }
 </script>

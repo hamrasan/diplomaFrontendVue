@@ -1,6 +1,7 @@
 <template>
-  <main>
-  </main>
+  <div>
+      DOMOV
+  </div>
 </template>
 
 <script>

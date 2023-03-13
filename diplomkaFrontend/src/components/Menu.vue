@@ -2,10 +2,13 @@
     <div class="container">
         <div class="m-auto">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <router-link to="/register" class="nav-link"><span>Registrace</span></router-link>
+                <li class="nav-item" v-if="!isLogged">
+                    <router-link to="/login" class="nav-link"><span>Přihlášení</span></router-link>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" v-if="isLogged">
+                    <a class="nav-link" @click="logout"><span>Odhlášení</span></a>
+                </li>
+                <li class="nav-item" v-if="isLogged">
                     <router-link to="/about" class="nav-link"><span>O mně</span></router-link>
                 </li>
             </ul>
@@ -16,5 +19,15 @@
 <script>
     export default {
         name: "Menu",
+        computed: {
+            isLogged() {
+                return this.$store.getters.isLogged();
+            }
+        },
+        methods: {
+            logout(){
+                this.$store.dispatch("logout");
+            }
+        }
     }
 </script>

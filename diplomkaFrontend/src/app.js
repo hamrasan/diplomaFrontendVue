@@ -31,9 +31,11 @@ app.use({
         app.config.globalProperties.$auth = {
             hasAnyRole(role) {
                 return app.config.globalProperties.$store.getters.hasAnyRole(role);
-            }
+            },
         }
     }
 });
 
-app.mount('#app')
+app.mount('#app');
+
+window.store = store;
