@@ -28,8 +28,13 @@ export default {
     },
     actions: {
         async fetchCurrentUser(context) {
-            const user = await axios.get("http://localhost:8080/user", {withCredentials: true}).catch(
-                router.push({name: 'login'})
+            const user = await axios.get("http://localhost:8080/user", {withCredentials: true}).catch( function (error){
+                if(error.response){
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                }
+                router.push({name: 'login'});
+            }
             );
             context.commit("setUser", user.data);
         },

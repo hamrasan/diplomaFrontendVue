@@ -38,6 +38,7 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
     if (to.meta.isLogged != null) {
         if (store.getters.isLogged() !== to.meta.isLogged) {
+            console.log(store.getters.isLogged());
             return {
                 name: 'home',
                 replace: true
