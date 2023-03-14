@@ -10,7 +10,7 @@
                 <input type="password" class="form-control" id="password" placeholder="Heslo" v-model="password">
             </div>
             <div class="mt-4 align-items-center">
-                <button type="button" class="btn btn-primary bg-dark" @click="login">Registrovat</button>
+                <button type="button" class="btn btn-primary bg-dark" @click="register">Registrovat</button>
             </div>
         </form>
     </div>
