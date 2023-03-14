@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Navigo';
+    src: local('Navigo Light'), local('Navigo-Light'),
+        url('Navigo-Light.woff2') format('woff2'),
+        url('Navigo-Light.woff') format('woff'),
+        url('Navigo-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }

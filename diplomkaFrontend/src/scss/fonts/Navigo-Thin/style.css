@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Navigo';
+    src: local('Navigo Thin'), local('Navigo-Thin'),
+        url('Navigo-Thin.woff2') format('woff2'),
+        url('Navigo-Thin.woff') format('woff'),
+        url('Navigo-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+  }
