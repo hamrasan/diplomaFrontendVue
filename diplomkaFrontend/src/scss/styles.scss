@@ -1,12 +1,28 @@
 @import "~bootstrap/scss/bootstrap";
 @import url('https://fonts.cdnfonts.com/css/arial');
-@import url('https://fonts.cdnfonts.com/css/warownia');
+@import "./fonts/Navigo-Bold/style.css";
+@import "./fonts/Navigo-Regular/style.css";
 
 .raiffeseisenComponentYellow {
-  background-color: yellow;
+  background-color: rgb(254, 230, 0);
   color: black;
   text-align: center;
-  font-family: Arial MT,Arial,sans-serif;
   padding-bottom: 20px;
   border-radius: 25px;
+}
+
+.yellowColor {
+  background-color: rgb(254, 230, 0);;
+}
+
+.blackColor {
+  background-color: rgb(43, 45, 51);
+}
+
+.greyColor {
+  background-color: rgb(85, 87, 92);
+}
+
+#app {
+  font-family: "Navigo-Regular", Arial, sans-serif;
 }

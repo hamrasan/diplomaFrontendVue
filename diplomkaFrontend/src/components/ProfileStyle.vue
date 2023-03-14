@@ -26,7 +26,7 @@
                         <p class="form-title">Man-day rate:</p>
                     </div>
                     <div class="col form-title-text">
-                        <p>{{user.mdRate}}</p>
+                        <p>{{user.mdRate}}%</p>
                     </div>
                 </div>
                 <div class="row d-flex">
@@ -99,6 +99,6 @@
         font-size: 18px;
         line-height: 26px;
         font-style: normal;
-        font-family: 'Warownia', Arial, sans-serif;
+        font-family: 'Navigo-Bold', Arial, sans-serif;
     }
 </style>
