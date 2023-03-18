@@ -23,6 +23,25 @@
   background-color: rgb(85, 87, 92);
 }
 
+.border-grey {
+  border-color: rgb(85, 87, 92) !important;
+}
+
 #app {
   font-family: "Navigo-Regular", Arial, sans-serif;
+}
+
+.dynamic-add {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.dynamic-input:focus{
+  border-color: rgb(43, 45, 51) !important;
+}
+
+.dynamic-input{
+  text-align: center;
 }

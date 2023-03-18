@@ -36,7 +36,7 @@ export default {
                 router.push({name: 'login'});
             }
             );
-            context.commit("setUser", user.data);
+            if (user) context.commit("setUser", user.data);
         },
          async login(context, {email, password}) {
              const user = await axios.post("http://localhost:8080/login", {
