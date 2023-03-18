@@ -1,11 +1,12 @@
 <template>
     <div v-for="project in projectList">
         <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="src/assets/project.png" alt="Project image">
             <div class="card-body">
                 <h5 class="card-title">{{project.name}}</h5>
+<!--                <h6 class="card-subtitle mb-2 text-muted">{{project.name}}</h6>-->
                 <p class="card-text">{{project.description}}</p>
-                <a href="#" class="btn btn-primary">Detail</a>
+                <a href="#" class="card-link">Detail</a>
+                <a href="#" class="card-link">Another link</a>
             </div>
         </div>
     </div>
