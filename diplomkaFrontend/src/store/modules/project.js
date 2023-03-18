@@ -5,13 +5,13 @@ export default {
     namespaced: true,
     state() {
         return {
-            project: null,
+            project: [],
             roles: []
         };
     },
     mutations: {
-        setProject(state, project) {
-            state.project = project;
+        setProjects(state, projects) {
+            state.projects = projects;
         },
         setRoles(state, roles){
             state.roles = roles;
@@ -28,6 +28,10 @@ export default {
                 }
             );
             context.commit("setRoles", roles.data);
+        },
+        async fetchProjects(context) {
+            const projects = await axios.get("http://localhost:8080/project/all", {withCredentials: true});
+            context.commit("setProjects", projects.data);
         },
         saveReservation(context, {reservations, projectId}) {
              axios.post("http://localhost:8080/project/reservation/" + projectId, {
