@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue';
 import LoginView from '../views/LoginView.vue';
 import RegisterView from '../views/RegisterView.vue';
+import Detail from '../components/Detail.vue';
 
 const routerHistory = createWebHistory("/");
 
@@ -31,6 +32,13 @@ const router = createRouter({
             name: 'register',
             component: RegisterView,
             meta: {isLogged: false}
+        },
+        {
+            path: '/detail/:id',
+            name: 'detail',
+            component: Detail,
+            meta: {isLogged: true},
+            props: true
         },
     ]
 });

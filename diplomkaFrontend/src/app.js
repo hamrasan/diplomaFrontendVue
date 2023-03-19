@@ -26,6 +26,7 @@ app.use(VueCookies, {
     sameSite: "None"
 });
 
+
 app.use({
     install(app){
         app.config.globalProperties.$auth = {

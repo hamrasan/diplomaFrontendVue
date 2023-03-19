@@ -1,15 +1,14 @@
 <template>
-    <div v-for="project in projectList">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">{{project.name}}</h5>
-<!--                <h6 class="card-subtitle mb-2 text-muted">{{project.name}}</h6>-->
-                <p class="card-text">{{project.description}}</p>
-                <a href="#" class="card-link">Detail</a>
-                <a href="#" class="card-link">Another link</a>
-            </div>
-        </div>
+    <div class="d-flex justify-content-center">
+        <button class="ml-2 px-3 py-2 rounded border yellowColor text-dark">+ Vytvořit</button>
     </div>
+    <ul class="list-group mt-3" v-for="project in projectList">
+        <li class="list-group-item d-flex justify-content-between">
+            <span>{{project.name}}</span>
+            <span></span>
+            <router-link :to="{ name: 'detail', params: { id: project.id }}" class="nav-link"><button class="ml-2 rounded border yellowColor text-dark">Detail</button></router-link>
+        </li>
+    </ul>
 </template>
 
 <script>
@@ -27,6 +26,11 @@
         },
         created() {
             this.$store.dispatch("project/fetchProjects");
+        },
+        methods: {
+            detail(projectId){
+
+            }
         }
     }
 </script>

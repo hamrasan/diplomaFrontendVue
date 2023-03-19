@@ -5,8 +5,9 @@ export default {
     namespaced: true,
     state() {
         return {
-            project: [],
-            roles: []
+            projects: [],
+            roles: [],
+            projectDetail: null
         };
     },
     mutations: {
@@ -15,7 +16,10 @@ export default {
         },
         setRoles(state, roles){
             state.roles = roles;
-        }
+        },
+        setProjectDetail(state, projectDetail) {
+            state.projectDetail = projectDetail;
+        },
     },
     actions: {
          async fetchRoles(context) {
@@ -33,10 +37,15 @@ export default {
             const projects = await axios.get("http://localhost:8080/project/all", {withCredentials: true});
             context.commit("setProjects", projects.data);
         },
-        saveReservation(context, {reservations, projectId}) {
-             axios.post("http://localhost:8080/project/reservation/" + projectId, {
+        async saveReservation(context, {reservations, projectId}) {
+             const project = await axios.post("http://localhost:8080/project/reservation/" + projectId, {
                 reservations: reservations
             },{withCredentials: true});
+            context.commit("setProjectDetail", project.data);
+        },
+        async getProject(context, projectId) {
+            const project = await axios.get("http://localhost:8080/project/" + projectId,{withCredentials: true});
+            context.commit("setProjectDetail", project.data);
         },
     }
 }
