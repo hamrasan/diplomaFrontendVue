@@ -26,7 +26,15 @@
                         <p class="form-title">Man-day rate:</p>
                     </div>
                     <div class="col form-title-text">
-                        <p>{{user.mdRate}}%</p>
+                        <p>{{user.mdRate}} Kč</p>
+                    </div>
+                </div>
+                <div class="row d-flex">
+                    <div class="col form-title">
+                        <p class="form-title">Dostupnost:</p>
+                    </div>
+                    <div class="col form-title-text">
+                        <p>{{user.availability}}%</p>
                     </div>
                 </div>
                 <div class="row d-flex">

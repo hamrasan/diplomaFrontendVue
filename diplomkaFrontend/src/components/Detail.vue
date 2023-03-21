@@ -10,6 +10,16 @@
             <h5 class="col">{{this.project.description}}</h5>
         </div>
     </div>
+    <div class="d-flex justify-content-center" v-if="this.project.projectAllocationDto">
+        <div>
+            <h5 class="col">{{toCzStatus(this.project.projectAllocationDto.status)}}</h5>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center" v-if="this.project.projectAllocationDto">
+        <div>
+            <h5 class="col">{{this.project.projectAllocationDto.reservationDate}}</h5>
+        </div>
+    </div>
     <div class="d-flex justify-content-center" v-if="this.project.projectAllocationDto == null ">
         <button class="mt-4 rounded border py-2 yellowColor text-dark col-1" @click="modalOpen">
             Vytvořit rezervaci
@@ -40,6 +50,17 @@
         methods: {
             modalOpen() {
                 this.isModalOpen = true;
+            },
+            toCzStatus(status) {
+                switch (status) {
+                    case 'ESTABLISHED' : {
+                        return "Rezervováno";
+                    }
+                    case 'ALLOCATED' : {
+                        return "Alokovaná";
+                    }
+                    default: return "chyba";
+                }
             }
         }
     }

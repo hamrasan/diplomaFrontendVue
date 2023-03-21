@@ -9,7 +9,7 @@
                     <div class="me-5 d-flex justify-content-center row">
                         <button
                                 type="button"
-                                class="ml-2 rounded border px-3 py-2 yellowColor text-dark col-1"
+                                class="ml-2 rounded border py-2 yellowColor text-dark col-1"
                                 @click="addMore()"
                         >
                             + Přidat
