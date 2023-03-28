@@ -70,7 +70,7 @@
 <script>
     export default {
         name: 'ProfileStyle',
-        props: ['user', 'username'],
+        props: ['user', 'username','id'],
         data() {
             return {}
         },

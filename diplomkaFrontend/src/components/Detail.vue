@@ -10,7 +10,7 @@
             <h5 class="col">{{this.project.description}}</h5>
         </div>
     </div>
-    <div class="d-flex justify-content-center" v-if="this.project.projectAllocationDto">
+    <div class="d-flex justify-content-center" v-if="this.project.projectAllocationDto != null">
         <div>
             <h5 class="col">{{toCzStatus(this.project.projectAllocationDto.status)}}</h5>
         </div>
