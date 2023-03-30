@@ -1,6 +1,10 @@
 <template>
     <div class="d-flex justify-content-center">
-        <button class="ml-2 px-3 py-2 rounded border yellowColor text-dark">+ Import zaměstanců</button>
+        <div class="mb-3">
+            <label for="formFile" class="btn ml-2 px-3 py-2 rounded border yellowColor text-dark">
+                + Import rolí <input class="form-control ml-2 px-3 py-2 rounded border yellowColor text-dark" type="file" id="formFile" @change="uploadFile" hidden>
+            </label>
+        </div>
     </div>
     <ul class="list-group mt-3" v-for="employee in employeeList">
         <li class="list-group-item d-flex justify-content-between">
@@ -23,5 +27,15 @@
         created() {
             this.$store.dispatch("employee/fetchEmployees");
         },
+        methods: {
+            async uploadFile(e){
+                try{
+                    this.$store.dispatch("employee/importRoles", e.target.files[0]);
+                }
+                catch (e) {
+
+                }
+            }
+        }
     }
 </script>

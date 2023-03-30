@@ -39,5 +39,11 @@ export default {
             context.commit("setEmployeeDetail", employee.data);
             console.log(employee.data);
         },
+        async importRoles(context, data){
+            const header = {"Content-Type": "multipart/form-data"};
+            const formData  = new FormData();
+            formData.append("inputFile", data);
+            await axios.post("http://localhost:8080/user/import", formData, {header});
+        }
     }
 }
