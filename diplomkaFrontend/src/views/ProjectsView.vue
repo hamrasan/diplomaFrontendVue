@@ -1,32 +1,45 @@
 <template>
     <div class="d-flex justify-content-center">
-        <button class="ml-2 px-3 py-2 rounded border yellowColor text-dark">+ Vytvořit</button>
+        <button class="ml-2 px-3 py-2 mb-2 rounded border yellowColor text-dark">+ Vytvořit</button>
     </div>
-    <ul class="list-group mt-3" v-for="project in projectList">
+    <div class="input-group rounded">
+        <input type="search" class="form-control rounded" placeholder="Hledat projekt..." aria-label="Search"
+               aria-describedby="search-addon" v-model="input"/>
+    </div>
+    <ul class="list-group mt-3" v-for="project in filteredList()">
         <li class="list-group-item d-flex justify-content-between">
             <span>{{project.name}}</span>
-            <span >{{toCzPhase(project.projectPhase)}}</span>
+            <span>{{toCzPhase(project.projectPhase)}}</span>
             <span></span>
-            <router-link :to="{ name: 'detail', params: { id: project.id }, emits: {toCzStatus}}" class="nav-link"><button class="ml-2 rounded border yellowColor text-dark">Detail</button></router-link>
+            <router-link :to="{ name: 'detail', params: { id: project.id }, emits: {toCzStatus}}" class="nav-link">
+                <button class="ml-2 rounded border yellowColor text-dark">Detail</button>
+            </router-link>
         </li>
     </ul>
 </template>
 
 <script>
+    import { ref } from "vue";
     export default {
         name: 'ProjectsView',
         data() {
-            return{
-
+            return {
+                input: "",
             }
         },
-        computed:{
+        computed: {
             projectList() {
                 return this.$store.state.project.projects;
             },
         },
         created() {
             this.$store.dispatch("project/fetchProjects");
+        },
+        watch: {
+            input() {
+                const a = this.filteredList();
+                console.log(a);
+            }
         },
         methods: {
             toCzStatus(status) {
@@ -37,7 +50,8 @@
                     case 'ALLOCATED' : {
                         return "Alokovaná";
                     }
-                    default: return "chyba";
+                    default:
+                        return "chyba";
                 }
             },
             toCzPhase(phase) {
@@ -51,8 +65,17 @@
                     case 'CLOSED' : {
                         return "Uzavřený";
                     }
-                    default: return "chyba";
+                    default:
+                        return "chyba";
                 }
+            },
+            filteredList() {
+                if(this.projectList != null){
+                     return this.projectList.filter( (project) =>
+                        project.name.toLowerCase().includes(this.input.toLowerCase())
+                    );
+                }
+                else return [];
             }
         }
     }

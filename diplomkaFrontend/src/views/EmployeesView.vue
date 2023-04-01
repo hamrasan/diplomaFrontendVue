@@ -6,7 +6,12 @@
             </label>
         </div>
     </div>
-    <ul class="list-group mt-3" v-for="employee in employeeList">
+
+    <div class="input-group rounded">
+        <input type="search" class="form-control rounded" placeholder="Hledat..." aria-label="Search"
+               aria-describedby="search-addon" v-model="input"/>
+    </div>
+    <ul class="list-group mt-3" v-for="employee in filteredList()">
         <li class="list-group-item d-flex justify-content-between">
             <span>{{employee.firstName + " " + employee.lastName}}</span>
             <span >{{}}</span>
@@ -19,6 +24,11 @@
 <script>
     export default {
         name: 'EmployeesView',
+        data() {
+          return{
+              input: "",
+          }
+        },
         computed:{
             employeeList() {
                 return this.$store.state.employee.employees;
@@ -35,6 +45,14 @@
                 catch (e) {
 
                 }
+            },
+            filteredList() {
+                if(this.employeeList != null){
+                    return this.employeeList.filter( (employee) =>
+                        employee.firstName.toLowerCase().includes(this.input.toLowerCase()) || employee.lastName.toLowerCase().includes(this.input.toLowerCase())
+                    );
+                }
+                else return [];
             }
         }
     }
