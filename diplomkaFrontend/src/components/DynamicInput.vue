@@ -18,15 +18,15 @@
                     <div class="container">
                         <div v-for="(reservation, index) in reservations" :key="index">
                             <div class="ml-2 mt-4">
-                                <div class="d-flex row-11 justify-content-between">
-                                    <span class="col-5">Počet</span>
+                                <div class="d-flex row-12 justify-content-between">
+                                    <span class="col-5">Man-days</span>
                                     <span class="col-7">Role</span>
                                 </div>
                                 <div class="row justify-content-between">
                                     <div class="col-11">
                                         <input
-                                                v-model="reservation.count"
-                                                placeholder="vlož počet"
+                                                v-model="reservation.md"
+                                                placeholder="vlož počet man-days"
                                                 class="w-full py-2 border rounded dynamic-input col-6"
                                                 type="number"
                                         />
@@ -75,7 +75,7 @@
             return {
                 reservations: [
                     {
-                        count: 1,
+                        md: 1,
                         role: ""
                     },
                 ],
@@ -84,7 +84,7 @@
         methods: {
             addMore() {
                 this.reservations.push({
-                    count: 1,
+                    md: 1,
                     role: ""
                 });
             },
@@ -102,7 +102,7 @@
                 this.$emit('close');
                 this.reservations = [
                     {
-                        count: 1,
+                        md: 1,
                         role: ""
                     },
                 ];
