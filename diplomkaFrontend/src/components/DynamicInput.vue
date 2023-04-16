@@ -57,30 +57,57 @@
             </div>
 
             <div v-if="this.name === 'alokace'">
-                <div class="container">
-                    <div v-for="(allocation, index) in this.allocations" :key="index">
-                        <div class="ml-2 mt-4">
-                            <div class="d-flex row-12 justify-content-between">
-                                <span class="col-3">Man-days</span>
-                                <span class="col-4">Role</span>
-                                <span class="col-4">Kandidát</span>
+                <div class="accordion pt-2" id="accordionPanelsStayOpen">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                Rezervováno
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                                    <div v-for="requirement in this.requirements">
+                                        <span class="text-danger">{{requirement.md}} MD</span>
+                                        <span> -> {{requirement.teamRole.name}} </span>
+                                        <span> ( {{usedManDays(requirement.teamRole.name)}} ze {{requirement.md}} )</span>
+                                    </div>
                             </div>
-                            <div class="d-flex row-12 justify-content-between">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="mt-4">
+                        <div class="d-flex justify-content-between row-12 text-center yellowColor pt-1 font-weight-bold">
+                            <span class="col-2">Man-days</span>
+                            <span class="col-2">Max man-days v alokaci (na člověka)</span>
+                            <span class="col-3">Role</span>
+                            <span class="col-3">Kandidát</span>
+                            <span class="col-2">Max kandidátových man-days</span>
+                        </div>
+                        <div v-for="(allocation, index) in this.allocations" :key="index">
+                            <div class="d-flex row-12 justify-content-between text-center mb-2">
                                 <input
                                         v-model="allocation.md"
                                         placeholder="počet man-days"
-                                        class="w-full py-2 border rounded dynamic-input col-3"
+                                        class="w-full py-2 border rounded dynamic-input col-2"
                                         type="number"
                                 />
-                                <span class="col-4">
+                                <span class="col-2 p-1">
+                                     {{allocation.maxMd}}
+                                </span>
+                                <span class="col-3">
                                     {{allocation.teamRole.name}}
                                 </span>
-                                <select v-model="allocations[index].user"
-                                           class="w-full py-2 border rounded dynamic-input col-4">
-                                            <option v-for="candidate in allocation.candidates" :value="candidate.id" :key="candidate.id">
-                                                {{candidate.firstName + " " +candidate.lastName}}
-                                            </option>
+                                <select v-model="allocation.user"
+                                        class="w-full py-2 border rounded dynamic-input col-3">
+                                    <option v-for="candidate in allocation.candidatesMd" :value="candidate.valueUser.id"
+                                            :key="candidate.valueUser.id">
+                                        {{candidate.valueUser.firstName + " " +candidate.valueUser.lastName}}
+                                    </option>
                                 </select>
+                                <span class="col-2">
+                                    {{candidateMd(allocation.candidatesMd, allocation.user)}}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -138,7 +165,10 @@
                 // let validationResponse = await this.v.$validate();
                 // if(!validationResponse) return ;
 
-                this.$store.dispatch("project/saveReservation", {reservations: this.reservations, projectId: this.project.id});
+                this.$store.dispatch("project/saveReservation", {
+                    reservations: this.reservations,
+                    projectId: this.project.id
+                });
                 this.$store.dispatch("project/fetchProjects");
                 this.closeModal();
             },
@@ -157,16 +187,30 @@
                         role: ""
                     },
                 ];
+            },
+            candidateMd(candidatesMd, userId) {
+                if (userId === undefined) return "";
+                else {
+                    let candidates = candidatesMd.filter(canidate => canidate.valueUser.id === userId);
+                    if (candidates !== null || candidates.length > 0) {
+                        return candidates[0].keyMd;
+                    }
+                }
+            },
+            usedManDays(teamRoleName){
+                let value = 0;
+                const allocations = this.allocations.filter(a => a.teamRole.name === teamRoleName).map(a => a.md).forEach(a => value+=a);
+                return value;
             }
         },
         created() {
             this.$store.dispatch("project/fetchRoles");
-            if(this.project.allocationDto != null){
+            if (this.project.allocationDto != null) {
                 //this.requirements = this.project.allocationDto.requirements;
-                for (let i = 0; i <  this.project.allocationDto.requirements.length; i++) {
+                for (let i = 0; i < this.project.allocationDto.requirements.length; i++) {
                     this.requirements.push(JSON.parse(JSON.stringify(this.project.allocationDto.requirements[i])));
                 }
-                for (let i = 0; i <  this.project.allocationDto.sourceAllocations.length; i++) {
+                for (let i = 0; i < this.project.allocationDto.sourceAllocations.length; i++) {
                     this.allocations.push(JSON.parse(JSON.stringify(this.project.allocationDto.sourceAllocations[i])));
                 }
             }
@@ -180,9 +224,9 @@
             }
         },
         watch: {
-            project:{
-                handler(newValue, oldValue){
-                    if(this.project.allocationDto != null){
+            project: {
+                handler(newValue, oldValue) {
+                    if (this.project.allocationDto != null) {
                         this.requirements = this.project.allocationDto.requirements;
                         this.allocations = this.project.allocationDto.sourceAllocations;
                     }
