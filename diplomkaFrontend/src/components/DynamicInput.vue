@@ -108,6 +108,7 @@
                                 <span class="col-2">
                                     {{candidateMd(allocation.candidatesMd, allocation.user)}}
                                 </span>
+                                <IconPlus type="button" class="ml-2 col-1" @click="add(index)"/>
                             </div>
                         </div>
                     </div>
@@ -131,13 +132,14 @@
 
 <script>
     import IconTrash from './icons/IconTrash.vue';
+    import IconPlus from './icons/IconPlus.vue';
     import Modal from './Modal.vue';
 
     export default {
         name: "DynamicInput",
         props: ['isModalOpen', 'name', 'project'],
         components: {
-            IconTrash, Modal
+            IconTrash, Modal, IconPlus
         },
         data() {
             return {
@@ -160,6 +162,12 @@
             },
             remove(index) {
                 this.reservations.splice(index, 1);
+            },
+            add(index) {
+                // var allocation = this.allocations[index];
+                var allocation = JSON.parse( JSON.stringify(this.allocations[index]));
+                console.log(allocation);
+                this.allocations.splice(index+1, 0, allocation);
             },
             async save() {
                 // let validationResponse = await this.v.$validate();
@@ -206,7 +214,6 @@
         created() {
             this.$store.dispatch("project/fetchRoles");
             if (this.project.allocationDto != null) {
-                //this.requirements = this.project.allocationDto.requirements;
                 for (let i = 0; i < this.project.allocationDto.requirements.length; i++) {
                     this.requirements.push(JSON.parse(JSON.stringify(this.project.allocationDto.requirements[i])));
                 }
