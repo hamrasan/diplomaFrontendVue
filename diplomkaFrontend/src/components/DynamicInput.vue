@@ -166,7 +166,6 @@
             add(index) {
                 // var allocation = this.allocations[index];
                 var allocation = JSON.parse( JSON.stringify(this.allocations[index]));
-                console.log(allocation);
                 this.allocations.splice(index+1, 0, allocation);
             },
             async save() {
@@ -184,7 +183,7 @@
                 // let validationResponse = await this.v.$validate();
                 // if(!validationResponse) return ;
 
-                //this.$store.dispatch("project/saveAllocation", {projectId: this.projectId});
+                this.$store.dispatch("project/saveAllocation", { sourceAllocations: this.allocations, projectId: this.project.id});
                 this.closeModal();
             },
             closeModal() {

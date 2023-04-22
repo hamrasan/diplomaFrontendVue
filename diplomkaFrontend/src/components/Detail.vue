@@ -73,7 +73,10 @@
                         return "Rezervováno - připravené pro alokaci zdrojů";
                     }
                     case 'ALLOCATED' : {
-                        return "Alokovaná";
+                        return "Alokovaná - čeká na schválení zdrojů";
+                    }
+                    case 'CONFIRMED' : {
+                        return "Alokace schválená";
                     }
                     default: return "chyba";
                 }

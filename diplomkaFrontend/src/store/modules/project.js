@@ -47,5 +47,11 @@ export default {
             const project = await axios.get("http://localhost:8080/project/" + projectId,{withCredentials: true});
             context.commit("setProjectDetail", project.data);
         },
+        async saveAllocation(context, {sourceAllocations, projectId}) {
+            const project = await axios.post("http://localhost:8080/project/allocation/" + projectId, {
+                sourceAllocations: sourceAllocations
+            },{withCredentials: true});
+            context.commit("setProjectDetail", project.data);
+        },
     }
 }
