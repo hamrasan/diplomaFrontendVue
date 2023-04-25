@@ -4,6 +4,7 @@ import AboutView from '../views/AboutView.vue';
 import LoginView from '../views/LoginView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import ProjectsView from '../views/ProjectsView.vue';
+import ManagerProjectsView from '../views/ManagerProjectsView.vue';
 import EmployeesView from '../views/EmployeesView.vue';
 import EmployeeDetail from '../components/EmployeeDetail.vue';
 import Detail from '../components/Detail.vue';
@@ -44,6 +45,12 @@ const router = createRouter({
             meta: {isLogged: true}
         },
         {
+            path: '/my-projects',
+            name: 'managerProjects',
+            component: ManagerProjectsView,
+            meta: {isLogged: true, hasRoleProjectManager: true}
+        },
+        {
             path: '/login',
             name: 'login',
             component: LoginView,
@@ -68,14 +75,20 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
     if (to.meta.isLogged != null) {
         if (store.getters.isLogged() !== to.meta.isLogged) {
-            console.log(store.getters.isLogged());
             return {
                 name: 'home',
                 replace: true
             }
         }
     }
-
+    if(to.meta.hasRoleProjectManager != null){
+        if (store.getters.hasRoleProjectManager() !== to.meta.hasRoleProjectManager) {
+            return {
+                name: 'home',
+                replace: true
+            }
+        }
+    }
 });
 
 export default router;

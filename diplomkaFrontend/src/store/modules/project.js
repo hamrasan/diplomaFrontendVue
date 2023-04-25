@@ -7,18 +7,26 @@ export default {
         return {
             projects: [],
             roles: [],
-            projectDetail: null
+            projectDetail: null,
+            sourceAllocations: [],
+            managerProjects: []
         };
     },
     mutations: {
         setProjects(state, projects) {
             state.projects = projects;
         },
+        setManagerProjects(state, projects) {
+            state.managerProjects = projects;
+        },
         setRoles(state, roles){
             state.roles = roles;
         },
         setProjectDetail(state, projectDetail) {
             state.projectDetail = projectDetail;
+        },
+        setSourceAllocations(state, sourceAllocations) {
+            state.sourceAllocations = sourceAllocations;
         },
     },
     actions: {
@@ -36,6 +44,14 @@ export default {
         async fetchProjects(context) {
             const projects = await axios.get("http://localhost:8080/project/all", {withCredentials: true});
             context.commit("setProjects", projects.data);
+        },
+        async fetchManagerProjects(context, userId) {
+            const projects = await axios.get("http://localhost:8080/project/all/" + userId, {withCredentials: true});
+            context.commit("setManagerProjects", projects.data);
+        },
+        async fetchAllocations(context, userId) {
+            const myAllocations = await axios.get("http://localhost:8080/project/sourceAllocations/" + userId, {withCredentials: true});
+            context.commit("setSourceAllocations", myAllocations.data);
         },
         async saveReservation(context, {reservations, projectId}) {
              const project = await axios.post("http://localhost:8080/project/reservation/" + projectId, {

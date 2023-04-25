@@ -22,11 +22,20 @@
             <h5 class="col">{{toCzStatus(this.project.allocationDto.status)}}</h5>
         </div>
     </div>
-    <div class="d-flex justify-content-center" v-if="this.project.allocationDto">
-        <div>
-            <h5 class="col">{{format_date(this.project.allocationDto.reservationDate)}}</h5>
+<!--    <div class="d-flex justify-content-center" v-if="this.project.allocationDto">-->
+<!--        <div>-->
+<!--            <h5 class="col">{{format_date(this.project.allocationDto.reservationDate)}}</h5>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div v-if="this.project.allocationDto != null && this.project.allocationDto.status !== 'ESTABLISHED'">
+        <div class="d-flex align-items-center flex-column alert alert-dark mt-4" v-if="this.project.allocationDto.sourceAllocations">
+            <div class="font-weight-bold">ALOKACE ZDROJŮ:</div>
+            <ul v-for="source in this.project.allocationDto.sourceAllocations">
+                <li>{{source.md + "MD - " + source.assigned.firstName + " " + source.assigned.lastName + " ( " + source.teamRole.name + " ) - "}} <span class="text-danger">{{toCzStatus(source.status)}} </span></li>
+            </ul>
         </div>
     </div>
+
     <h4 v-if="this.project.allocationDto == null" class="text-danger d-flex justify-content-center"> Rezervace zdrojů nebyla vytvořena</h4>
     <div class="d-flex justify-content-center" v-if="this.project.allocationDto == null ">
         <button class="mt-4 rounded border py-2 yellowColor text-dark col-1" @click="modalOpen('rezervace')">
@@ -77,6 +86,9 @@
                     }
                     case 'CONFIRMED' : {
                         return "Alokace schválená";
+                    }
+                    case 'INPROGRESS' : {
+                        return "Čeká na schválení";
                     }
                     default: return "chyba";
                 }

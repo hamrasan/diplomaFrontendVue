@@ -8,6 +8,9 @@
                 <li class="nav-item" v-if="isLogged">
                     <router-link to="/projects" class="nav-link"><span>Projekty</span></router-link>
                 </li>
+                <li class="nav-item" v-if="isProjectManager">
+                    <router-link to="/my-projects" class="nav-link"><span>Moje projekty</span></router-link>
+                </li>
                 <li class="nav-item" v-if="!isLogged">
                     <router-link to="/login" class="nav-link"><span>Přihlášení</span></router-link>
                 </li>
@@ -28,7 +31,10 @@
         computed: {
             isLogged() {
                 return this.$store.getters.isLogged();
-            }
+            },
+            isProjectManager() {
+                return this.$store.getters.hasRoleProjectManager();
+            },
         },
         methods: {
             logout(){

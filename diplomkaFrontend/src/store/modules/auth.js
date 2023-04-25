@@ -17,14 +17,26 @@ export default {
             return state.user != null;
         },
         hasAnyRole: state => (role) => {
-            if(state.user?.role == null)
+            if(state.user?.teamRole == null)
                 return false;
 
             if(typeof role === "string")
-                return state.user?.role === role;
+                return state.user?.teamRole === role;
 
             return false;
-        }
+        },
+        hasRoleAdmin: state => () => {
+            if(state.user?.teamRole == null)
+                return false;
+
+            return state.user?.teamRole.name === "System Administrator";
+        },
+        hasRoleProjectManager: state => () => {
+            if(state.user?.teamRole == null)
+                return false;
+
+            return state.user?.teamRole.name === "Change Coordinator - Project Manager";
+        },
     },
     actions: {
         async fetchCurrentUser(context) {

@@ -105,7 +105,7 @@
                                         {{candidate.valueUser.firstName + " " +candidate.valueUser.lastName}}
                                     </option>
                                 </select>
-                                <span class="col-2">
+                                <span class="col-2 p-1">
                                     {{candidateMd(allocation.candidatesMd, allocation.user)}}
                                 </span>
                                 <IconPlus type="button" class="ml-2 col-1" @click="add(index)"/>
