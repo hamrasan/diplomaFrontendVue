@@ -9,14 +9,10 @@
             <span>{{allocation?.md}}MD</span>
             <span>{{findProject(allocation.projectId)}}</span>
             <span>{{allocation?.assigned?.firstName + " " + allocation?.assigned?.lastName}}</span>
-<!--            <span>{{toCzStatus(allocation.status)}}</span>-->
-<!--            <span></span>-->
-<!--            <router-link :to="{ name: 'detail', params: { id: project.id }, emits: {toCzStatus}}" class="nav-link">-->
-            <div v-if="allocation.status === INPROGRESS">
+            <div v-if="allocation.status === 'INPROGRESS'">
                 <button class="ml-2 rounded border greenColor text-dark">Schválit</button>
                 <button class="ml-2 rounded border redColor text-dark">Zamítnout</button>
             </div>
-            <!--            </router-link>-->
         </li>
     </ul>
 </template>
@@ -33,7 +29,7 @@
         },
         computed: {
             sourceAllocations() {
-                return this.$store.state.project.sourceAllocations;
+                return this.$store.state.project.sourceAllocations.filter(allocation => allocation.assigned !== undefined);
             },
             user() {
                return this.$store.state.auth.user;

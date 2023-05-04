@@ -1,8 +1,12 @@
 <template>
     <div class="container mt-3 my-3 raiffeseisenComponentYellow">
         <div class="row d-flex justify-content-center">
-            <div class="col col-sm-6 col-4 mt-3">
+            <div class="col col-sm-2 col-2 mt-3"></div>
+            <div class="col col-sm-8 col-8 mt-3">
                 <h3>{{username}}</h3>
+            </div>
+            <div class="col col-sm-2 col-2 mt-3">
+                <button v-if="isMemberOfMyTeam()" class="ml-2 rounded border greyColor text-light p-2" @click="edit()">Upravit</button>
             </div>
         </div>
         <div class="row d-flex justify-content-center">
@@ -65,20 +69,39 @@
             <div class="col"></div>
         </div>
     </div>
+    <EditEmployeeModal v-if="isModalOpen" :isModalOpen="isModalOpen" :user="this.user" @close="isModalOpen = false"/>
 </template>
 
 <script>
+    import EditEmployeeModal from "./EditEmployeeModal.vue";
     export default {
         name: 'ProfileStyle',
-        props: ['user', 'username','id'],
+        components: {EditEmployeeModal},
+        props: ['user', 'username','id', 'currentUser'],
         data() {
-            return {}
+            return {
+                isModalOpen: false,
+            }
         },
         methods: {
             getUserGenderImage() {
                 if (this.user.gender === "WOMAN") {
                     return "/src/assets/woman.png";
                 } else return "/src/assets/man23.png";
+            },
+            isMemberOfMyTeam() {
+                var returnString = false;
+                if(this.currentUser?.teamRole.name === 'Team Leader'){
+                    this.currentUser.teamLeaderTeamIds.forEach(id => {
+                        if(this.user?.teamMembersIds.includes(id)){
+                            returnString = true;
+                        }
+                    })
+                }
+                return returnString;
+            },
+            edit() {
+                this.isModalOpen = true;
             }
         }
     }

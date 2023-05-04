@@ -7,7 +7,9 @@ export default {
         return {
             employees: [],
             roles: [],
-            employeeDetail: null
+            employeeDetail: null,
+            skillsets: [],
+            employments: [],
         };
     },
     mutations: {
@@ -17,17 +19,30 @@ export default {
         setRoles(state, roles){
             state.roles = roles;
         },
+        setEmployments(state, employments){
+            state.employments = employments;
+        },
+        setSkillsets(state, skillsets){
+            state.skillsets = skillsets;
+        },
         setEmployeeDetail(state, employeeDetail) {
             state.employeeDetail = employeeDetail;
         },
     },
     actions: {
-        async fetchRoles(context) {
-            const roles = await axios.get("http://localhost:8080/user/roles", {withCredentials: true}).catch( function (error){
+        async fetchSkillsets(context) {
+            const skillsets = await axios.get("http://localhost:8080/user/skillsets", {withCredentials: true}).catch( function (error){
                     router.push({name: 'login'});
                 }
             );
-            context.commit("setRoles", roles.data);
+            context.commit("setSkillsets", skillsets.data);
+        },
+        async fetchEmployments(context) {
+            const employments = await axios.get("http://localhost:8080/user/employments", {withCredentials: true}).catch( function (error){
+                    router.push({name: 'login'});
+                }
+            );
+            context.commit("setEmployments", employments.data);
         },
         async fetchEmployees(context) {
             const employees = await axios.get("http://localhost:8080/user/all", {withCredentials: true});
@@ -44,6 +59,6 @@ export default {
             const formData  = new FormData();
             formData.append("inputFile", data);
             await axios.post("http://localhost:8080/user/import", formData, {header});
-        }
+        },
     }
 }

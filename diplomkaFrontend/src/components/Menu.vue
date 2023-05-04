@@ -9,7 +9,10 @@
                     <router-link to="/projects" class="nav-link"><span>Projekty</span></router-link>
                 </li>
                 <li class="nav-item" v-if="isProjectManager">
-                    <router-link to="/my-projects" class="nav-link"><span>Moje projekty</span></router-link>
+                    <router-link to="/my-projects" class="nav-link"><span>Alokace na projekty</span></router-link>
+                </li>
+                <li class="nav-item" v-if="isTeamLeader">
+                    <router-link to="/my-teams" class="nav-link"><span>Moje tými</span></router-link>
                 </li>
                 <li class="nav-item" v-if="!isLogged">
                     <router-link to="/login" class="nav-link"><span>Přihlášení</span></router-link>
@@ -35,6 +38,9 @@
             isProjectManager() {
                 return this.$store.getters.hasRoleProjectManager();
             },
+            isTeamLeader() {
+                return this.$store.getters.hasRoleTeamLeader();
+            }
         },
         methods: {
             logout(){
