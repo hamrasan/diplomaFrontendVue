@@ -33,9 +33,11 @@
                         </option>
                     </select>
                 </div>
+                <div class="form-group pt-2">
+                    <button type="button" class="btn btn-primary" @click="edit">Upravit</button>
+                </div>
             </form>
         </template>
-            <button type="submit" class="btn btn-primary">Submit</button>
         <template #footer>
 
         </template>
@@ -50,6 +52,7 @@
     export default {
         name: "EditEmployeeModal",
         props: ['isModalOpen', 'user'],
+        emits: ['edit'],
         components: {
             Modal
         },
@@ -62,12 +65,26 @@
             };
         },
         methods: {
-            async save() {
-            },
-
             closeModal() {
                 this.$emit('close');
             },
+            async edit() {
+                this.$store.dispatch("employee/editEmployee", {
+                    data: {
+                        role: this.roleModel,
+                        employment: this.employmentModel,
+                        skillset: this.skillsetModel,
+                        mdRate: this.mdRateModel,
+                    },
+                    userId: this.user.id
+                });
+                this.$store.dispatch("project/fetchRoles");
+                this.$store.dispatch("employee/fetchEmployments");
+                this.$store.dispatch("employee/fetchSkillsets");
+                // this.$store.dispatch("employee/getEmployee", this.user.id);
+                this.$emit('edit');
+                this.closeModal();
+            }
         },
         created(){
             this.$store.dispatch("project/fetchRoles");

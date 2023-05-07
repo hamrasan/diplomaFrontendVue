@@ -1,9 +1,10 @@
 <template>
-    <ProfileStyle :user="employee" :username="userName" :currentUser="currentUser"></ProfileStyle>
+    <ProfileStyle :user="this.employee" :username="userName" :currentUser="currentUser" :id="this.id" @editUser="editUser"></ProfileStyle>
 </template>
 
 <script>
     import ProfileStyle from "./ProfileStyle.vue";
+    import employee from "../store/modules/employee";
     export default {
         name: 'EmployeeDetail',
         components: {ProfileStyle},
@@ -22,6 +23,11 @@
         },
         created(){
             this.$store.dispatch("employee/getEmployee", this.id);
+        },
+        methods: {
+            editUser() {
+                //this.$store.dispatch("employee/getEmployee", this.id);
+            }
         }
     }
 </script>

@@ -49,10 +49,8 @@ export default {
             context.commit("setEmployees", employees.data);
         },
         async getEmployee(context, employeeId) {
-            console.log(employeeId);
             const employee = await axios.get("http://localhost:8080/user/" + employeeId,{withCredentials: true});
             context.commit("setEmployeeDetail", employee.data);
-            console.log(employee.data);
         },
         async importRoles(context, data){
             const header = {"Content-Type": "multipart/form-data"};
@@ -60,5 +58,14 @@ export default {
             formData.append("inputFile", data);
             await axios.post("http://localhost:8080/user/import", formData, {header});
         },
+        async editEmployee(context, {data, userId}) {
+            const employee = await axios.post("http://localhost:8080/user/edit/" + userId, {
+                role: data.role,
+                employment: data.employment,
+                skillset: data.skillset,
+                mdRate: data.mdRate,
+            },{withCredentials: true});
+            context.commit("setEmployeeDetail", employee.data);
+        }
     }
 }

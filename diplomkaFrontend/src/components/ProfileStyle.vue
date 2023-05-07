@@ -69,7 +69,7 @@
             <div class="col"></div>
         </div>
     </div>
-    <EditEmployeeModal v-if="isModalOpen" :isModalOpen="isModalOpen" :user="this.user" @close="isModalOpen = false"/>
+    <EditEmployeeModal v-if="isModalOpen" :isModalOpen="isModalOpen" :user="this.user" @close="isModalOpen = false" @edit="$emit('editUser')"/>
 </template>
 
 <script>
@@ -78,6 +78,7 @@
         name: 'ProfileStyle',
         components: {EditEmployeeModal},
         props: ['user', 'username','id', 'currentUser'],
+        emits: ['editUser'],
         data() {
             return {
                 isModalOpen: false,
@@ -102,7 +103,7 @@
             },
             edit() {
                 this.isModalOpen = true;
-            }
+            },
         }
     }
 </script>

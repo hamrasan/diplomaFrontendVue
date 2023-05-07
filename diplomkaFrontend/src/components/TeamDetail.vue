@@ -19,7 +19,7 @@
     import DynamicInput from "./DynamicInput.vue";
     import moment from 'moment';
     export default {
-        name: "Detail",
+        name: "TeamDetail",
         components: {DynamicInput},
         props: ['id'],
         data() {
