@@ -1,8 +1,13 @@
 <template>
-    <div class="d-flex justify-content-center">
-        <div>
-            <h2 class="col">{{this.team.name}}</h2>
+    <div class="d-flex justify-content-between">
+        <div class="col-2"></div>
+        <div class="col-4">
+            <h2 class="col text-center">{{this.team.name}}</h2>
         </div>
+            <div class="mb-3">
+                <button class="ml-2 rounded border yellowColor text-dark px-3 py-2" @click="modalOpen('add')">+ Přidat člena</button>
+                <button class="ml-2 rounded border yellowColor text-dark px-3 py-2" @click="modalOpen('delete')">+ Odebrat člena</button>
+            </div>
     </div>
     <ul class="list-group mt-3" v-for="user in this.team.users">
         <li class="list-group-item d-flex justify-content-between">
@@ -13,19 +18,20 @@
             </router-link>
         </li>
     </ul>
+    <AddDeleteMemberModal v-if="isModalOpen" :isModalOpen="isModalOpen" :team="this.team" @close="isModalOpen = false" :action="this.action"/>
 </template>
 
 <script>
-    import DynamicInput from "./DynamicInput.vue";
     import moment from 'moment';
+    import AddDeleteMemberModal from "./AddDeleteMemberModal.vue";
     export default {
         name: "TeamDetail",
-        components: {DynamicInput},
+        components: {AddDeleteMemberModal},
         props: ['id'],
         data() {
             return{
                 isModalOpen: false,
-                modal: "",
+                action: "add",
             }
         },
         computed: {
@@ -38,7 +44,7 @@
         },
         methods: {
             modalOpen(name) {
-                this.modal = name;
+                this.action = name;
                 this.isModalOpen = true;
             },
             format_date(value){

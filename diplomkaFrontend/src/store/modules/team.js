@@ -7,6 +7,7 @@ export default {
         return {
             teams: [],
             teamDetail: null,
+            usersModal: [],
         };
     },
     mutations: {
@@ -16,6 +17,9 @@ export default {
         setTeamDetail(state, teamDetail) {
             state.teamDetail = teamDetail;
         },
+        setUsersModal(state, usersModal){
+            state.usersModal = usersModal;
+        }
     },
     actions: {
         async fetchTeamsByLeader(context, teamLeaderId) {
@@ -27,6 +31,20 @@ export default {
         },
         async getTeam(context, teamId) {
             const team = await axios.get("http://localhost:8080/team/" + teamId,{withCredentials: true});
+            context.commit("setTeamDetail", team.data);
+        },
+        async addEmployee(context, {employeeId, teamId}) {
+            const team = await axios.post("http://localhost:8080/team/" + teamId + "/employee/" + employeeId,{withCredentials: true});
+            context.commit("setTeamDetail", team.data);
+        },
+        async fetchUsersWithoutTeam(context, teamId){
+            const users = await axios.get("http://localhost:8080/team/" + teamId + "/users/", {withCredentials: true}).catch( function (error){
+                }
+            );
+            context.commit("setUsersModal", users.data);
+        },
+        async deleteEmployee(context, {employeeId, teamId}) {
+            const team = await axios.post("http://localhost:8080/team/" + teamId + "/delete/employee/" + employeeId,{withCredentials: true});
             context.commit("setTeamDetail", team.data);
         },
     }

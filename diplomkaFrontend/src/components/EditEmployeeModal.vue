@@ -34,7 +34,7 @@
                     </select>
                 </div>
                 <div class="form-group pt-2">
-                    <button type="button" class="btn btn-primary" @click="edit">Upravit</button>
+                    <button type="button" class="btn yellowColor" @click="edit">Upravit</button>
                 </div>
             </form>
         </template>
@@ -81,8 +81,7 @@
                 this.$store.dispatch("project/fetchRoles");
                 this.$store.dispatch("employee/fetchEmployments");
                 this.$store.dispatch("employee/fetchSkillsets");
-                // this.$store.dispatch("employee/getEmployee", this.user.id);
-                this.$emit('edit');
+                // this.$emit('edit');
                 this.closeModal();
             }
         },
