@@ -10,8 +10,8 @@
             <span>{{findProject(allocation.projectId)}}</span>
             <span>{{allocation?.assigned?.firstName + " " + allocation?.assigned?.lastName}}</span>
             <div v-if="allocation.status === 'INPROGRESS'">
-                <button class="ml-2 rounded border greenColor text-dark">Schválit</button>
-                <button class="ml-2 rounded border redColor text-dark">Zamítnout</button>
+                <button class="ml-2 rounded border greenColor text-dark" @click="confirm(allocation)">Schválit</button>
+                <button class="ml-2 rounded border redColor text-dark" @click="refuse(allocation)">Zamítnout</button>
             </div>
         </li>
     </ul>
@@ -29,7 +29,7 @@
         },
         computed: {
             sourceAllocations() {
-                return this.$store.state.project.sourceAllocations.filter(allocation => allocation.assigned !== undefined);
+                return this.$store.state.project.sourceAllocations.filter(allocation => allocation.assigned !== undefined && allocation.status === 'INPROGRESS');
             },
             user() {
                return this.$store.state.auth.user;
@@ -76,6 +76,12 @@
                     default:
                         return "chyba";
                 }
+            },
+            confirm(allocation){
+                this.$store.dispatch("project/confirmAllocation", allocation.id);
+            },
+            refuse(allocation){
+                this.$store.dispatch("project/refuseAllocation", allocation.id);
             },
             filteredList() {
                 if(this.sourceAllocations != null){

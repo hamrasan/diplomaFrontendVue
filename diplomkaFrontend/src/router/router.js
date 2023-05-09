@@ -50,7 +50,7 @@ const router = createRouter({
             path: '/my-projects',
             name: 'managerProjects',
             component: ManagerProjectsView,
-            meta: {isLogged: true, hasRoleProjectManager: true}
+            meta: {isLogged: true, hasRoleTeamLeader: true}
         },
         {
             path: '/my-teams',

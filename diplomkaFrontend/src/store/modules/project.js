@@ -69,5 +69,13 @@ export default {
             },{withCredentials: true});
             context.commit("setProjectDetail", project.data);
         },
+        async refuseAllocation(context, allocationId){
+            const allocations = await axios.get("http://localhost:8080/project/sourceAllocation/" + allocationId + "/refuse",{withCredentials: true});
+            context.commit("setSourceAllocations", allocations.data);
+        },
+        async confirmAllocation(context, allocationId){
+             const allocations = await axios.get("http://localhost:8080/project/sourceAllocation/" + allocationId + "/confirm",{withCredentials: true});
+             context.commit("setSourceAllocations", allocations.data);
+             },
     }
 }

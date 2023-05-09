@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="m-auto">
-            <div class="dropdown navbar-nav">
+            <div class="dropdown min navbar-nav">
                 <button
                         class="btn dropdown-toggle"
                         type="button" id="dropdownMenuButton1"
@@ -30,7 +30,7 @@
                 <li class="nav-item" v-if="isLogged">
                     <router-link to="/projects" class="nav-link"><span>Projekty</span></router-link>
                 </li>
-                <li class="nav-item" v-if="isProjectManager">
+                <li class="nav-item" v-if="isLogged">
                     <router-link to="/my-projects" class="nav-link"><span>Alokace na projekty</span></router-link>
                 </li>
                 <li class="nav-item" v-if="isTeamLeader">
@@ -45,6 +45,50 @@
                 <li class="nav-item" v-if="isLogged">
                     <router-link to="/about" class="nav-link"><span>O mně</span></router-link>
                 </li>
+<!--                <button-->
+<!--                        class="btn dropdown-toggle"-->
+<!--                        type="button" id="notification"-->
+<!--                        data-bs-toggle="dropdown"-->
+<!--                        aria-expanded="false">-->
+<!--                    <Notification></Notification>-->
+<!--                </button>-->
+                <li class="nav-item" v-if="isLogged">
+                    <div class="dropdown navbar-nav">
+                        <button
+                                class="btn"
+                                type="button" id="dropdownMenuButtonBell"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <notification-bell
+                                    :size="28"
+                                    :count=this.notifications.length
+                                    :ding="true"
+                                    :upperLimit="50"
+                                    counterLocation="upperRight"
+                                    counterStyle="roundRectangle"
+                                    counterBackgroundColor="#FF0000"
+                                    counterTextColor="#ffffff"
+                                    iconColor="#ffffff"
+                            />
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonBell" role="menu">
+                            <li :key="option2" v-for="notification in this.notifications">
+
+                                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                        <strong class="me-auto">Notifikace</strong>
+                                        <small>{{notification.date}}</small>
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" @click="readNotification(notification)"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        {{notification.message}}
+                                    </div>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
@@ -52,10 +96,13 @@
 
 <script>
     import Hamburger from './icons/Hamburger.vue';
+    import Notification from './icons/Notification.vue';
+    import NotificationBell from './NotificationBell.vue';
+
     export default {
         name: "Menu",
         components: {
-            Hamburger
+            Hamburger, Notification, NotificationBell
         },
         computed: {
             isLogged() {
@@ -66,11 +113,17 @@
             },
             isTeamLeader() {
                 return this.$store.getters.hasRoleTeamLeader();
+            },
+            notifications() {
+                return this.$store.getters.notifications();
             }
         },
         methods: {
             logout(){
                 this.$store.dispatch("logout");
+            },
+            readNotification(notification) {
+                this.$store.dispatch("readNotification", notification.id);
             }
         }
     }

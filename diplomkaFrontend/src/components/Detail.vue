@@ -87,6 +87,9 @@
                     case 'CONFIRMED' : {
                         return "Alokace schválená";
                     }
+                    case 'DENINED' : {
+                        return "Alokace zamítnuta";
+                    }
                     case 'INPROGRESS' : {
                         return "Čeká na schválení";
                     }

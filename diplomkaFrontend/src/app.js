@@ -6,7 +6,7 @@ import router from './router/router.js';
 import store from './store/index.js';
 import VueAxios from 'vue-axios';
 import axios from "axios";
-import VueCookies from 'vue3-cookies'
+import VueCookies from 'vue3-cookies';
 
 import './scss/styles.scss'
 
@@ -25,8 +25,6 @@ app.use(VueCookies, {
     secure: true,
     sameSite: "None"
 });
-
-
 app.use({
     install(app){
         app.config.globalProperties.$auth = {

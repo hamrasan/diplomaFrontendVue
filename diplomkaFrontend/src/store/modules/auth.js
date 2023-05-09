@@ -10,7 +10,7 @@ export default {
     mutations: {
         setUser(state, user) {
             state.user = user;
-        }
+        },
     },
     getters: {
         isLogged: state => () => {
@@ -43,6 +43,9 @@ export default {
 
             return state.user?.teamRole.name === "Team Leader";
         },
+        notifications: state => () => {
+           return state.user?.notifications.filter(n => n.read === false);
+        },
     },
     actions: {
         async fetchCurrentUser(context) {
@@ -72,6 +75,17 @@ export default {
             document.cookie = "JSESSIONID" +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
             context.commit("setUser", null);
             await router.push({name: 'home'});
-        }
+        },
+        async readNotification(context, notificationId) {
+            const user = await axios.get("http://localhost:8080/user/notification/" + notificationId,{withCredentials: true}).catch( function (error){
+                    if(error.response){
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                    }
+                    router.push({name: 'login'});
+                }
+            );
+            if (user) context.commit("setUser", user.data);
+        },
     }
 }
