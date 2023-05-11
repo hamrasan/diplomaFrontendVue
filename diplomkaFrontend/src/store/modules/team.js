@@ -37,6 +37,15 @@ export default {
             const team = await axios.post("http://localhost:8080/team/" + teamId + "/employee/" + employeeId,{withCredentials: true});
             context.commit("setTeamDetail", team.data);
         },
+        async create(context, {name, teamLeaderId}) {
+            console.log(name);
+            console.log(teamLeaderId);
+            const teams = await axios.post("http://localhost:8080/team",{
+                name: name,
+                teamLeaderId: teamLeaderId,
+            },{withCredentials: true});
+            context.commit("setTeams", teams.data);
+        },
         async fetchUsersWithoutTeam(context, teamId){
             const users = await axios.get("http://localhost:8080/team/" + teamId + "/users/", {withCredentials: true}).catch( function (error){
                 }
