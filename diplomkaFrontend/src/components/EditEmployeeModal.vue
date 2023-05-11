@@ -38,7 +38,7 @@
                 <div class="form-group">
                     <label for="employment">Dostupnost:</label>
                     <input type="number" class="form-control" id="availability" aria-describedby="availability"  v-model="availabilityModel" placeholder="Vlož dostupnost uživatele v procentách">
-                    <span v-if="errorAvailability===true" class="text-danger">Dostupnost musí být v rozmezí 0 až 100.</span>
+                    <span v-if="errorAvailability===true" class="text-danger">Dostupnost musí být v rozmezí 0 až 100 %.</span>
                 </div>
                 <div class="form-group pt-2">
                     <button type="button" class="btn yellowColor" @click="edit">Upravit</button>
