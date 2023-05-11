@@ -6,8 +6,9 @@
         <template #body>
             <form>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Man-day rate:</label>
-                    <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="mandaRate"  v-model="mdRateModel" placeholder="Vlož man-day rate">
+                    <label for="mdRate">Man-day rate:</label>
+                    <input type="number" class="form-control" id="mdRate" aria-describedby="mandayRate"  v-model="mdRateModel" placeholder="Vlož man-day rate">
+                    <span v-if="errorManDayRate===true" class="text-danger">Částka man-day rate musí být větší nebo rovno 0.</span>
                 </div>
                 <div class="form-group">
                     <label for="role">Role:</label>
@@ -32,6 +33,12 @@
                             {{employment}}
                         </option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="employment">Dostupnost:</label>
+                    <input type="number" class="form-control" id="availability" aria-describedby="availability"  v-model="availabilityModel" placeholder="Vlož dostupnost uživatele v procentách">
+                    <span v-if="errorAvailability===true" class="text-danger">Dostupnost musí být v rozmezí 0 až 100.</span>
                 </div>
                 <div class="form-group pt-2">
                     <button type="button" class="btn yellowColor" @click="edit">Upravit</button>
@@ -62,19 +69,35 @@
                 employmentModel: this.user?.employment,
                 skillsetModel: this.user?.skillset,
                 mdRateModel: this.user?.mdRate,
+                availabilityModel: this.user?.availability,
+                errorAvailability: false,
+                errorManDayRate: false,
             };
+        },
+        watch: {
+            // whenever question changes, this function will run
+            availabilityModel(newAvailability, oldAvailability) {
+                this.errorAvailability = newAvailability < 0 || newAvailability > 100;
+            },
+            mdRateModel(newRate, oldRate) {
+                this.errorManDayRate = newRate < 0;
+            },
         },
         methods: {
             closeModal() {
                 this.$emit('close');
             },
             async edit() {
+                if (this.errorAvailability === true || this.errorManDayRate === true){
+                    return;
+                }
                 this.$store.dispatch("employee/editEmployee", {
                     data: {
                         role: this.roleModel,
                         employment: this.employmentModel,
                         skillset: this.skillsetModel,
                         mdRate: this.mdRateModel,
+                        availability: this.availabilityModel,
                     },
                     userId: this.user.id
                 });

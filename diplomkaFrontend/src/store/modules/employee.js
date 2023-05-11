@@ -64,6 +64,7 @@ export default {
                 employment: data.employment,
                 skillset: data.skillset,
                 mdRate: data.mdRate,
+                availability: data.availability,
             },{withCredentials: true});
             context.commit("setEmployeeDetail", employee.data);
         }
