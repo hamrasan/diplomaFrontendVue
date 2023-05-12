@@ -1,7 +1,8 @@
 <template>
     <modal :modalOpen="isModalOpen" @close="closeModal">
         <template #header>
-            <h3>Přidání zaměstance do tímu {{this.team.name}}</h3>
+            <h3 v-if="this.action === 'add'">Přidání zaměstnance do týmu {{this.team.name}}</h3>
+            <h3 v-if="this.action === 'delete'">Odebrání zaměstnance z týmu {{this.team.name}}</h3>
         </template>
         <template #body>
             <form>
