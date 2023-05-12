@@ -15,7 +15,6 @@ axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
 const app = createApp(App);
 
-app.use(router);
 app.use(store);
 app.use(VueAxios, axios);
 app.use(VueCookies, {
@@ -31,9 +30,16 @@ app.use({
             hasAnyRole(role) {
                 return app.config.globalProperties.$store.getters.hasAnyRole(role);
             },
+            isLogged() {
+                return app.config.globalProperties.$store.getters.isLogged();
+            },
+            hasLoginCookies() {
+                return document.cookie.split("; ").some((item) => item.trim().startsWith("JSESSIONID"));
+            }
         }
     }
 });
+app.use(router);
 
 app.mount('#app');
 

@@ -74,7 +74,7 @@ export default {
 
             document.cookie = "JSESSIONID" +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
             context.commit("setUser", null);
-            await router.push({name: 'home'});
+            await router.push({name: 'login'});
         },
         async readNotification(context, notificationId) {
             const user = await axios.get("http://localhost:8080/user/notification/" + notificationId,{withCredentials: true}).catch( function (error){

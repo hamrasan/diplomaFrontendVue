@@ -81,7 +81,7 @@ const router = createRouter({
             path: '/project/detail/:id',
             name: 'detail',
             component: Detail,
-            meta: {isLogged: true},
+            meta: {isLogged: true, hasRoleProjectManager: true},
             props: true
         },
     ]
@@ -89,7 +89,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
     if (to.meta.isLogged != null) {
-        if (store.getters.isLogged() !== to.meta.isLogged) {
+        const cookie = document.cookie.split("; ").some((item) => item.trim().startsWith("JSESSIONID"));
+        if (store.getters.isLogged() !== to.meta.isLogged && !cookie ) {
             return {
                 name: 'home',
                 replace: true

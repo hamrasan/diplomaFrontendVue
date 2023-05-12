@@ -38,8 +38,6 @@ export default {
             context.commit("setTeamDetail", team.data);
         },
         async create(context, {name, teamLeaderId}) {
-            console.log(name);
-            console.log(teamLeaderId);
             const teams = await axios.post("http://localhost:8080/team",{
                 name: name,
                 teamLeaderId: teamLeaderId,
