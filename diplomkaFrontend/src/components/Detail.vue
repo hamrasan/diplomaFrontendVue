@@ -42,7 +42,7 @@
             Vytvořit rezervaci
         </button>
     </div>
-    <div class="d-flex justify-content-center" v-if="this.project.allocationDto != null && this.project.allocationDto.status === 'ESTABLISHED'">
+    <div class="d-flex justify-content-center" v-if="this.project.allocationDto != null && this.project.allocationDto.status === 'ESTABLISHED' && this.isProjectManager">
         <button class="mt-4 rounded border py-2 yellowColor text-dark col-1" @click="modalOpen('alokace')">
             Vytvořit alokaci
         </button>
@@ -66,6 +66,9 @@
         computed: {
             project(){
                return this.$store.state.project.projectDetail;
+            },
+            isProjectManager() {
+                return this.$store.getters.hasRoleProjectManager();
             }
         },
         created(){

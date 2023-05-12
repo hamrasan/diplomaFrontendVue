@@ -35,6 +35,9 @@ app.use({
             },
             hasLoginCookies() {
                 return document.cookie.split("; ").some((item) => item.trim().startsWith("JSESSIONID"));
+            },
+            hasRoleProjectManager() {
+                return app.config.globalProperties.$store.getters.hasRoleProjectManager();
             }
         }
     }

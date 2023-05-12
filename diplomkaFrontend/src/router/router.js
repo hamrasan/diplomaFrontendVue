@@ -81,7 +81,7 @@ const router = createRouter({
             path: '/project/detail/:id',
             name: 'detail',
             component: Detail,
-            meta: {isLogged: true, hasRoleProjectManager: true},
+            meta: {isLogged: true},
             props: true
         },
     ]
