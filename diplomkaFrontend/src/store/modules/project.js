@@ -59,6 +59,12 @@ export default {
             },{withCredentials: true});
             context.commit("setProjectDetail", project.data);
         },
+        async saveReservationRelease(context, {reservations, projectId, releaseId}) {
+            const project = await axios.post("http://localhost:8080/project/reservation/" + projectId + "/release/" + releaseId, {
+                reservations: reservations
+            },{withCredentials: true});
+            context.commit("setProjectDetail", project.data);
+        },
         async getProject(context, projectId) {
             const project = await axios.get("http://localhost:8080/project/" + projectId,{withCredentials: true});
             context.commit("setProjectDetail", project.data);

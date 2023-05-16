@@ -137,7 +137,7 @@
 
     export default {
         name: "DynamicInput",
-        props: ['isModalOpen', 'name', 'project'],
+        props: ['isModalOpen', 'name', 'project', 'release'],
         components: {
             IconTrash, Modal, IconPlus
         },
@@ -171,11 +171,19 @@
             async save() {
                 // let validationResponse = await this.v.$validate();
                 // if(!validationResponse) return ;
-
-                this.$store.dispatch("project/saveReservation", {
-                    reservations: this.reservations,
-                    projectId: this.project.id
-                });
+                if(this.release !== null){
+                    this.$store.dispatch("project/saveReservationRelease", {
+                        reservations: this.reservations,
+                        projectId: this.project.id,
+                        releaseId: this.release.id
+                    });
+                }
+                else {
+                    this.$store.dispatch("project/saveReservation", {
+                        reservations: this.reservations,
+                        projectId: this.project.id
+                    });
+                }
                 this.$store.dispatch("project/fetchProjects");
                 this.closeModal();
             },
@@ -212,12 +220,20 @@
         },
         created() {
             this.$store.dispatch("project/fetchRoles");
-            if (this.project.allocationDto != null) {
+            if (this.project.allocationDto != null && this.release == null) {
                 for (let i = 0; i < this.project.allocationDto.requirements.length; i++) {
                     this.requirements.push(JSON.parse(JSON.stringify(this.project.allocationDto.requirements[i])));
                 }
                 for (let i = 0; i < this.project.allocationDto.sourceAllocations.length; i++) {
                     this.allocations.push(JSON.parse(JSON.stringify(this.project.allocationDto.sourceAllocations[i])));
+                }
+            }
+            else if(this.project.allocationDto != null && this.release.allocationDto != null){
+                for (let i = 0; i < this.release.allocationDto.requirements.length; i++) {
+                    this.requirements.push(JSON.parse(JSON.stringify(this.release.allocationDto.requirements[i])));
+                }
+                for (let i = 0; i < this.release.allocationDto.sourceAllocations.length; i++) {
+                    this.allocations.push(JSON.parse(JSON.stringify(this.release.allocationDto.sourceAllocations[i])));
                 }
             }
         },
@@ -235,6 +251,14 @@
                     if (this.project.allocationDto != null) {
                         this.requirements = this.project.allocationDto.requirements;
                         this.allocations = this.project.allocationDto.sourceAllocations;
+                    }
+                }
+            },
+            release: {
+                handler(newValue, oldValue) {
+                    if (this.release.allocationDto != null) {
+                        this.requirements = this.release.allocationDto.requirements;
+                        this.allocations = this.release.allocationDto.sourceAllocations;
                     }
                 }
             }

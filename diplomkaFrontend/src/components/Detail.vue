@@ -27,6 +27,19 @@
 <!--            <h5 class="col">{{format_date(this.project.allocationDto.reservationDate)}}</h5>-->
 <!--        </div>-->
 <!--    </div>-->
+
+    <h4 v-if="this.project.allocationDto == null" class="text-danger d-flex justify-content-center"> Rezervace zdrojů nebyla vytvořena</h4>
+    <div class="d-flex justify-content-center" v-if="this.project.allocationDto == null ">
+        <button class="mt-4 rounded border py-2 yellowColor text-dark col-1" @click="modalOpen('rezervace', null)">
+            Vytvořit rezervaci
+        </button>
+    </div>
+    <div class="d-flex justify-content-center" v-if="this.project.allocationDto != null && this.project.allocationDto.status === 'ESTABLISHED' && this.isProjectManager">
+        <button class="mt-4 rounded border py-2 yellowColor text-dark col-1" @click="modalOpen('alokace', null)">
+            Vytvořit alokaci
+        </button>
+    </div>
+
     <div v-if="this.project.allocationDto != null && this.project.allocationDto.status !== 'ESTABLISHED'">
         <div class="d-flex align-items-center flex-column alert alert-dark mt-4" v-if="this.project.allocationDto.sourceAllocations">
             <div class="font-weight-bold">ALOKACE ZDROJŮ:</div>
@@ -36,18 +49,24 @@
         </div>
     </div>
 
-    <h4 v-if="this.project.allocationDto == null" class="text-danger d-flex justify-content-center"> Rezervace zdrojů nebyla vytvořena</h4>
-    <div class="d-flex justify-content-center" v-if="this.project.allocationDto == null ">
-        <button class="mt-4 rounded border py-2 yellowColor text-dark col-1" @click="modalOpen('rezervace')">
-            Vytvořit rezervaci
-        </button>
+    <div class="d-flex justify-content-center flex-column mt-4" v-if="this.project.releases">
+        <div class="font-weight-bold">Releasy v projektu:</div>
+        <div v-for="release in this.project.releases" class="border border-2 rounded">
+            <span class="font-weight-bold mt-1">{{release.name}}</span> <span>{{format_date(release.releaseStartDate)}}-{{format_date(release.releaseEndDate)}}</span>
+
+            <div v-if="release.allocationDto == null">
+                <button class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('rezervace', release)">
+                    Vytvořit rezervaci
+                </button>
+            </div>
+            <div v-if="release.allocationDto && release.allocationDto.status === 'ESTABLISHED' && this.isProjectManager">
+                <button class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('alokace', release)">
+                    Vytvořit alokaci
+                </button>
+            </div>
+        </div>
     </div>
-    <div class="d-flex justify-content-center" v-if="this.project.allocationDto != null && this.project.allocationDto.status === 'ESTABLISHED' && this.isProjectManager">
-        <button class="mt-4 rounded border py-2 yellowColor text-dark col-1" @click="modalOpen('alokace')">
-            Vytvořit alokaci
-        </button>
-    </div>
-    <DynamicInput v-if="isModalOpen" :isModalOpen="isModalOpen" :project="project" :name="modal" @close="isModalOpen = false"/>
+    <DynamicInput v-if="isModalOpen" :isModalOpen="isModalOpen" :project="project" :name="modal" :release="modalRelease" @close="isModalOpen = false"/>
 </template>
 
 <script>
@@ -61,6 +80,7 @@
             return{
                 isModalOpen: false,
                 modal: "",
+                modalRelease: null
             }
         },
         computed: {
@@ -75,8 +95,9 @@
             this.$store.dispatch("project/getProject", this.id);
         },
         methods: {
-            modalOpen(name) {
+            modalOpen(name, release) {
                 this.modal = name;
+                this.modalRelease = release;
                 this.isModalOpen = true;
             },
             toCzStatus(status) {
