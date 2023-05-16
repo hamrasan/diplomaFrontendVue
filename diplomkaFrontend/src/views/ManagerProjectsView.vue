@@ -7,7 +7,7 @@
         <li class="list-group-item d-flex justify-content-between">
             <span>{{allocation?.teamRole?.name }}</span>
             <span>{{allocation?.md}}MD</span>
-            <span>{{findProject(allocation.projectId)}}</span>
+            <span>{{findProject(allocation.projectId)}} ( {{format_date(allocation?.startDate)}}-{{format_date(allocation?.endDate)}} )</span>
             <span>{{allocation?.assigned?.firstName + " " + allocation?.assigned?.lastName}}</span>
             <div v-if="allocation.status === 'INPROGRESS'">
                 <button class="ml-2 rounded border greenColor text-dark" @click="confirm(allocation)">Schválit</button>
@@ -93,7 +93,12 @@
             },
             findProject(id) {
                  return this.managerProjects.filter( project => project.id === id).map(project => project.name)[0];
-            }
+            },
+            format_date(value){
+                if (value) {
+                    return moment(String(value)).format('DD.MM.YYYY');
+                }
+            },
         }
     }
 </script>
