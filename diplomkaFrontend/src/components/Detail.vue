@@ -50,9 +50,9 @@
     </div>
 
     <div class="d-flex justify-content-center flex-column mt-4" v-if="this.project.releases">
-        <div class="font-weight-bold">Releasy v projektu:</div>
+        <h3 class="font-weight-bold">Releasy v projektu:</h3>
         <div v-for="release in this.project.releases" class="border border-2 rounded">
-            <span class="font-weight-bold mt-1">{{release.name}}</span> <span>{{format_date(release.releaseStartDate)}}-{{format_date(release.releaseEndDate)}}</span>
+            <span class="font-weight-bold mt-1 h5">{{release.name}}</span> <span class="h5">{{format_date(release.releaseStartDate)}}-{{format_date(release.releaseEndDate)}}</span>
 
             <div v-if="release.allocationDto == null">
                 <button class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('rezervace', release)">
@@ -64,6 +64,16 @@
                     Vytvořit alokaci
                 </button>
             </div>
+
+            <div v-if="release.allocationDto != null && release.allocationDto.status !== 'ESTABLISHED'">
+                <div class="d-flex align-items-center flex-column alert alert-dark mt-4" v-if="release.allocationDto.sourceAllocations">
+                    <div class="font-weight-bold">ALOKACE ZDROJŮ:</div>
+                    <ul v-for="source in release.allocationDto.sourceAllocations">
+                        <li>{{source.md + "MD - " + source.assigned.firstName + " " + source.assigned.lastName + " ( " + source.teamRole.name + " ) - "}} <span class="text-danger">{{toCzStatus(source.status)}} </span></li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
     </div>
     <DynamicInput v-if="isModalOpen" :isModalOpen="isModalOpen" :project="project" :name="modal" :release="modalRelease" @close="isModalOpen = false"/>
