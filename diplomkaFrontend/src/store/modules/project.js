@@ -9,7 +9,7 @@ export default {
             roles: [],
             projectDetail: null,
             sourceAllocations: [],
-            managerProjects: []
+            managerProjects: [],
         };
     },
     mutations: {

@@ -13,7 +13,7 @@
                     <li :key="option1">
                         <router-link v-if="isLogged" to="/employees" class="nav-link dropdown-item bg-dark"><span>Zaměstnanci</span></router-link>
                         <router-link v-if="isLogged" to="/projects" class="nav-link dropdown-item bg-dark"><span>Projekty</span></router-link>
-                        <router-link v-if="isProjectManager" to="/my-projects" class="nav-link dropdown-item bg-dark"><span>Alokace na projekty</span></router-link>
+                        <router-link v-if="isTeamLeader" to="/my-projects" class="nav-link dropdown-item bg-dark"><span>Alokace na projekty</span></router-link>
                         <router-link v-if="isTeamLeader" to="/my-teams" class="nav-link dropdown-item bg-dark"><span>Moje tými</span></router-link>
                         <router-link v-if="!isLogged" to="/login" class="nav-link dropdown-item bg-dark"><span>Přihlášení</span></router-link>
                         <a v-if="isLogged" class="nav-link dropdown-item bg-dark" @click="logout"><span>Odhlášení</span></a>
@@ -30,7 +30,7 @@
                 <li class="nav-item" v-if="isLogged">
                     <router-link to="/projects" class="nav-link"><span>Projekty</span></router-link>
                 </li>
-                <li class="nav-item" v-if="isLogged">
+                <li class="nav-item" v-if="isTeamLeader">
                     <router-link to="/my-projects" class="nav-link"><span>Alokace na projekty</span></router-link>
                 </li>
                 <li class="nav-item" v-if="isTeamLeader">
