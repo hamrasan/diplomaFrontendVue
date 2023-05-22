@@ -68,20 +68,51 @@
             </div>
             <div class="col"></div>
         </div>
+        <div class="container">
+            <div class="col bg-light round">
+                <div class="justify-content-center mb-2">
+                    <span class="yellowColor rounded p-1 ">Nedostupnosti zaměstnance:</span>
+                    <div>
+                        Choroba:
+                    </div>
+                    <ul v-for="illness in formatAfterToday(this.user.userIllness)">
+                        <li>{{format_date(illness.from)}}-{{format_date(illness.to)}}</li>
+                    </ul>
+                    <div>
+                        Dovolená:
+                    </div>
+                    <ul v-for="holiday in formatAfterToday(this.user.userHoliday)">
+                        <li>{{format_date(holiday.from)}}-{{format_date(holiday.to)}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex container">
+            <div class="col bg-light round" v-if="!this.currentUser">
+                <div class="d-flex justify-content-center font-weight-bold mb-2">
+                    <span class="yellowColor rounded p-1 ">Zadat nedostupnost zaměstnance:</span>
+                </div>
+                <AddNotAvailaible :user="this.user" />
+            </div>
+        </div>
     </div>
     <EditEmployeeModal v-if="isModalOpen" :isModalOpen="isModalOpen" :user="this.user" @close="isModalOpen = false" @edit="$emit('editUser')"/>
 </template>
 
 <script>
     import EditEmployeeModal from "./EditEmployeeModal.vue";
+    import AddNotAvailaible from "./AddNotAvailaible.vue";
+    import moment from 'moment';
     export default {
         name: 'ProfileStyle',
-        components: {EditEmployeeModal},
+        components: {EditEmployeeModal, AddNotAvailaible},
         props: ['user', 'username','id', 'currentUser'],
         emits: ['editUser'],
         data() {
             return {
                 isModalOpen: false,
+                isModalOpenAvailability: false,
             }
         },
         methods: {
@@ -104,6 +135,31 @@
             edit() {
                 this.isModalOpen = true;
             },
+            format_date(value){
+                if (value) {
+                    return moment(String(value)).format('DD.MM.YYYY');
+                }
+            },
+            compare_date(value1, value2){
+                if (value1 && value2) {
+                    return moment(String(value1)).isAfter(String(value2));
+                }
+            },
+            formatAfterToday(list) {
+                return list.filter(date => this.compare_date(date.to, new Date()));
+            }
+        },
+        watch: {
+            loading(newL, oldL) {
+                if (newL === false && oldL === true){
+                    return this.$store.dispatch("fetchCurrentUser");
+                }
+            }
+        },
+        computed: {
+            loading() {
+                return this.$store.state.employee.loading;
+            }
         }
     }
 </script>

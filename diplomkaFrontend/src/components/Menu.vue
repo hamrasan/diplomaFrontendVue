@@ -17,7 +17,7 @@
                         <router-link v-if="isTeamLeader" to="/my-teams" class="nav-link dropdown-item bg-dark"><span>Moje tými</span></router-link>
                         <router-link v-if="!isLogged" to="/login" class="nav-link dropdown-item bg-dark"><span>Přihlášení</span></router-link>
                         <a v-if="isLogged" class="nav-link dropdown-item bg-dark" @click="logout"><span>Odhlášení</span></a>
-                        <router-link  v-if="isLogged" to="/about" class="nav-link dropdown-item bg-dark"><span>O mně</span></router-link>
+                        <router-link  v-if="isLogged" to="/about" class="nav-link dropdown-item bg-dark"><span>Profil</span></router-link>
                     </li>
                 </ul>
             </div>
@@ -43,7 +43,7 @@
                     <a class="nav-link" @click="logout"><span>Odhlášení</span></a>
                 </li>
                 <li class="nav-item" v-if="isLogged">
-                    <router-link to="/about" class="nav-link"><span>O mně</span></router-link>
+                    <router-link to="/about" class="nav-link"><span>Profil</span></router-link>
                 </li>
 <!--                <button-->
 <!--                        class="btn dropdown-toggle"-->

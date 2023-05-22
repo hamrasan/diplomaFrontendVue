@@ -57,6 +57,7 @@ export default {
                 router.push({name: 'login'});
             }
             );
+            console.log(user);
             if (user) context.commit("setUser", user.data);
         },
          async login(context, {email, password}) {

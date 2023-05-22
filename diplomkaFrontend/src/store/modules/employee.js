@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from "../../router/router";
+import auth from "./auth";
 
 export default {
     namespaced: true,
@@ -10,6 +11,7 @@ export default {
             employeeDetail: null,
             skillsets: [],
             employments: [],
+            loading: false,
         };
     },
     mutations: {
@@ -27,6 +29,9 @@ export default {
         },
         setEmployeeDetail(state, employeeDetail) {
             state.employeeDetail = employeeDetail;
+        },
+        setLoading(state, loading) {
+            state.loading = loading;
         },
     },
     actions: {
@@ -67,6 +72,16 @@ export default {
                 availability: data.availability,
             },{withCredentials: true});
             context.commit("setEmployeeDetail", employee.data);
+        },
+        async addIllnessAndHoliday(context, {data, userId}){
+            context.commit("setLoading", true);
+             await axios.post("http://localhost:8080/user/addIllness/" + userId, {
+                illnessStart: data.illnessStart,
+                illnessEnd: data.illnessEnd,
+                holidayStart: data.holidayStart,
+                holidayEnd: data.holidayEnd,
+            },{withCredentials: true});
+            context.commit("setLoading", false);
         }
     }
 }

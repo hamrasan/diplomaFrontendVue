@@ -7,6 +7,7 @@ import store from './store/index.js';
 import VueAxios from 'vue-axios';
 import axios from "axios";
 import VueCookies from 'vue3-cookies';
+import Datepicker from 'vue3-datepicker';
 
 import './scss/styles.scss'
 
@@ -17,6 +18,7 @@ const app = createApp(App);
 
 app.use(store);
 app.use(VueAxios, axios);
+app.component('datepicker', Datepicker);
 app.use(VueCookies, {
     expireTimes: "30d",
     path: "/",
