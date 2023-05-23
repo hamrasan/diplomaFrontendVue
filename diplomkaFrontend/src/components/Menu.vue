@@ -15,6 +15,7 @@
                         <router-link v-if="isLogged" to="/projects" class="nav-link dropdown-item bg-dark"><span>Projekty</span></router-link>
                         <router-link v-if="isTeamLeader" to="/my-projects" class="nav-link dropdown-item bg-dark"><span>Alokace na projekty</span></router-link>
                         <router-link v-if="isTeamLeader" to="/my-teams" class="nav-link dropdown-item bg-dark"><span>Moje tými</span></router-link>
+                        <router-link v-if="isTeamLeader || isProjectManager" to="/history" class="nav-link dropdown-item bg-dark"><span>Historie alokací</span></router-link>
                         <router-link v-if="!isLogged" to="/login" class="nav-link dropdown-item bg-dark"><span>Přihlášení</span></router-link>
                         <a v-if="isLogged" class="nav-link dropdown-item bg-dark" @click="logout"><span>Odhlášení</span></a>
                         <router-link  v-if="isLogged" to="/about" class="nav-link dropdown-item bg-dark"><span>Profil</span></router-link>
@@ -35,6 +36,9 @@
                 </li>
                 <li class="nav-item" v-if="isTeamLeader">
                     <router-link to="/my-teams" class="nav-link"><span>Moje tými</span></router-link>
+                </li>
+                <li class="nav-item" v-if="isTeamLeader || isProjectManager">
+                    <router-link to="/history" class="nav-link"><span>Historie alokací</span></router-link>
                 </li>
                 <li class="nav-item" v-if="!isLogged">
                     <router-link to="/login" class="nav-link"><span>Přihlášení</span></router-link>

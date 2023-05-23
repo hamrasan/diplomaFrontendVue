@@ -10,6 +10,7 @@ export default {
             projectDetail: null,
             sourceAllocations: [],
             managerProjects: [],
+            historyAllocations: [],
         };
     },
     mutations: {
@@ -27,6 +28,9 @@ export default {
         },
         setSourceAllocations(state, sourceAllocations) {
             state.sourceAllocations = sourceAllocations;
+        },
+        setHistoryAllocations(state, sourceAllocations) {
+            state.historyAllocations = sourceAllocations;
         },
     },
     actions: {
@@ -52,6 +56,10 @@ export default {
         async fetchAllocations(context, userId) {
             const myAllocations = await axios.get("http://localhost:8080/project/sourceAllocations/" + userId, {withCredentials: true});
             context.commit("setSourceAllocations", myAllocations.data);
+        },
+        async fetchHistoryAllocations(context) {
+            const allocations = await axios.get("http://localhost:8080/project/sourceAllocations/history", {withCredentials: true});
+            context.commit("setHistoryAllocations", allocations.data);
         },
         async saveReservation(context, {reservations, projectId}) {
              const project = await axios.post("http://localhost:8080/project/reservation/" + projectId, {

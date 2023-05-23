@@ -6,6 +6,7 @@ import TeamsView from '../views/TeamsView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import ProjectsView from '../views/ProjectsView.vue';
 import ManagerProjectsView from '../views/ManagerProjectsView.vue';
+import AllocationHistoryView from '../views/AllocationHistoryView.vue';
 import EmployeesView from '../views/EmployeesView.vue';
 import EmployeeDetail from '../components/EmployeeDetail.vue';
 import Detail from '../components/Detail.vue';
@@ -84,6 +85,13 @@ const router = createRouter({
             meta: {isLogged: true},
             props: true
         },
+        {
+            path: '/history',
+            name: 'history',
+            component: AllocationHistoryView,
+            meta: {isLogged: true, hasRoleTeamLeader: true, hasRoleProjectManager: true},
+            props: true
+        },
     ]
 });
 
@@ -97,7 +105,15 @@ router.beforeEach(async (to, from) => {
             }
         }
     }
-    if(to.meta.hasRoleProjectManager != null){
+    if(to.meta.hasRoleProjectManager === true && to.meta.hasRoleTeamLeader === true){
+        if (store.getters.hasRoleProjectManager() !== to.meta.hasRoleProjectManager && store.getters.hasRoleTeamLeader() !== to.meta.hasRoleTeamLeader) {
+            return {
+                name: 'home',
+                replace: true
+            }
+        }
+    }
+    else if(to.meta.hasRoleProjectManager != null){
         if (store.getters.hasRoleProjectManager() !== to.meta.hasRoleProjectManager) {
             return {
                 name: 'home',
@@ -105,7 +121,7 @@ router.beforeEach(async (to, from) => {
             }
         }
     }
-    if(to.meta.hasRoleTeamLeader != null){
+    else if(to.meta.hasRoleTeamLeader != null){
         if (store.getters.hasRoleTeamLeader() !== to.meta.hasRoleTeamLeader) {
             return {
                 name: 'home',

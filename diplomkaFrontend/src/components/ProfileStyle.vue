@@ -68,7 +68,7 @@
             </div>
             <div class="col"></div>
         </div>
-        <div class="container">
+        <div class="container mt-2">
             <div class="col bg-light round">
                 <div class="justify-content-center mb-2">
                     <span class="yellowColor rounded p-1 ">Nedostupnosti zaměstnance:</span>
@@ -88,7 +88,7 @@
             </div>
         </div>
 
-        <div class="row d-flex container">
+        <div class="d-flex container mt-2">
             <div class="col bg-light round" v-if="!this.currentUser">
                 <div class="d-flex justify-content-center font-weight-bold mb-2">
                     <span class="yellowColor rounded p-1 ">Zadat nedostupnost zaměstnance:</span>
