@@ -1,35 +1,13 @@
 <template>
     <form>
         <span class="font-weight-bold">Choroba: </span>
-        <div class="form-group d-flex mt-2 justify-content-center mb-3">
-            Od: &nbsp;
-            <datepicker class="col"
-                    v-model="this.illnessStart"
-                    :lowerLimit="this.from"
-            />
-            &nbsp;
-            Do: &nbsp;
-            <datepicker class="col"
-                    v-model="this.illnessEnd"
-                    :lowerLimit="this.from"
-            />
-            &nbsp;
+        <div class="form-group d-flex mt-2 justify-content-center mb-3">&nbsp;
+            <VueDatePicker v-model="this.illness" range :enable-time-picker="false"/>
             <span v-if="errorIllness===true" class="text-danger">Datum začátku musí být dřív než datum konce.</span>
         </div>
         <span class="font-weight-bold">Dovolená: </span>
         <div class="form-group d-flex mt-2 justify-content-center">
-            Od: &nbsp;
-            <datepicker
-                    v-model="this.holidayStart"
-                    :lowerLimit="this.from"
-            />
-            &nbsp;
-            Do: &nbsp;
-            <datepicker class="col"
-                        v-model="this.holidayEnd"
-                        :lowerLimit="this.from"
-            />
-            &nbsp;
+            <VueDatePicker v-model="this.holiday" range :enable-time-picker="false"/>
             <span v-if="errorHoliday===true" class="text-danger">Datum začátku musí být dřív než datum konce.</span>
         </div>
         <div class="form-group pt-2">
@@ -41,43 +19,66 @@
 <script>
     import Datepicker from 'vue3-datepicker';
     import moment from 'moment';
+    import VueDatePicker from '@vuepic/vue-datepicker';
+    import '@vuepic/vue-datepicker/dist/main.css';
 
     export default {
         name: "AddNotAvailable",
         props: ['isModalOpen', 'user'],
         emits: ['edit'],
         components: {
-            Datepicker
+            Datepicker, VueDatePicker
         },
         data() {
             return {
                 from: new Date(),
-                illnessStart: null,
-                illnessEnd: null,
-                holidayStart: null,
-                holidayEnd: null,
+                illness: [],
+                holiday: [],
                 errorIllness: false,
                 errorHoliday: false,
             };
         },
         methods: {
             async add() {
-                if (this.errorHoliday === true || this.errorIllness === true) {
+                if (this.errorHoliday === true || this.errorIllness === true || (this.illness.length === 0 && this.holiday.length === 0) ) {
                     return;
                 }
-                this.$store.dispatch("employee/addIllnessAndHoliday", {
-                    data: {
-                        illnessStart: this.illnessStart,
-                        illnessEnd: this.illnessEnd,
-                        holidayStart: this.holidayStart,
-                        holidayEnd: this.holidayEnd,
-                    },
-                    userId: this.user.id
-                });
-                this.illnessStart = null;
-                this.illnessEnd = null;
-                this.holidayStart = null;
-                this.holidayEnd = null;
+                if(this.illness.length !== 0 && this.holiday.length !== 0){
+                    this.$store.dispatch("employee/addIllnessAndHoliday", {
+                        data: {
+                            illnessStart: this.illness[0],
+                            illnessEnd: this.illness[1],
+                            holidayStart: this.holiday[0],
+                            holidayEnd: this.holiday[1],
+                        },
+                        userId: this.user.id
+                    });
+                }
+                else if(this.illness.length !== 0){
+                    this.$store.dispatch("employee/addIllnessAndHoliday", {
+                        data: {
+                            illnessStart: this.illness[0],
+                            illnessEnd: this.illness[1],
+                            holidayStart: null,
+                            holidayEnd: null,
+                        },
+                        userId: this.user.id
+                    });
+                }
+                else if(this.holiday.length !== 0){
+                    this.$store.dispatch("employee/addIllnessAndHoliday", {
+                        data: {
+                            illnessStart: null,
+                            illnessEnd: null,
+                            holidayStart: this.holiday[0],
+                            holidayEnd: this.holiday[1],
+                        },
+                        userId: this.user.id
+                    });
+                }
+
+                this.illness = [];
+                this.holiday = [];
             }
         },
         computed: {

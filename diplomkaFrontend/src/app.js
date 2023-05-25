@@ -9,6 +9,8 @@ import axios from "axios";
 import VueCookies from 'vue3-cookies';
 import Datepicker from 'vue3-datepicker';
 
+import VueDatePicker from '@vuepic/vue-datepicker';
+
 import './scss/styles.scss'
 
 axios.defaults.headers.get['Content-Type'] = 'application/json';
@@ -19,6 +21,7 @@ const app = createApp(App);
 app.use(store);
 app.use(VueAxios, axios);
 app.component('datepicker', Datepicker);
+app.component('VueDatePicker', VueDatePicker);
 app.use(VueCookies, {
     expireTimes: "30d",
     path: "/",

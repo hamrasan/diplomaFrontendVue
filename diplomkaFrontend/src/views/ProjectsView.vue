@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-center">
-        <button class="ml-2 px-3 py-2 mb-2 rounded border yellowColor text-dark">+ Vytvořit</button>
+        <button class="ml-2 px-3 py-2 mb-2 rounded border yellowColor text-dark" @click="modalOpen()">+ Vytvořit</button>
     </div>
     <div class="input-group rounded">
         <input type="search" class="form-control rounded" placeholder="Hledat projekt..." aria-label="Search"
@@ -16,20 +16,30 @@
             </router-link>
         </li>
     </ul>
+    <CreateProjectModal v-if="isModalOpen" :isModalOpen="isModalOpen" :user="this.user" @close="isModalOpen = false"/>
 </template>
 
 <script>
     import { ref } from "vue";
+    import CreateProjectModal from "../components/CreateProjectModal.vue";
+
     export default {
         name: 'ProjectsView',
+        components: {
+            CreateProjectModal
+        },
         data() {
             return {
                 input: "",
+                isModalOpen: false,
             }
         },
         computed: {
             projectList() {
                 return this.$store.state.project.projects;
+            },
+            user() {
+                return this.$store.state.auth.user;
             },
         },
         created() {
@@ -76,6 +86,9 @@
                     );
                 }
                 else return [];
+            },
+            modalOpen() {
+                this.isModalOpen = true;
             }
         }
     }

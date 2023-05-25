@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-center">
-        <button class="ml-2 px-3 py-2 mb-2 rounded border yellowColor text-dark" @click="modalOpen('create')">+ Vytvořit tým</button>
+        <button class="ml-2 px-3 py-2 mb-2 rounded border yellowColor text-dark" @click="modalOpen()">+ Vytvořit tým</button>
     </div>
     <div class="input-group rounded">
         <input type="search" class="form-control rounded" placeholder="Hledat tým..." aria-label="Search"

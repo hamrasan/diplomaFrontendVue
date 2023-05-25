@@ -91,5 +91,14 @@ export default {
              const allocations = await axios.get("http://localhost:8080/project/sourceAllocation/" + allocationId + "/confirm",{withCredentials: true});
              context.commit("setSourceAllocations", allocations.data);
              },
+        async createProject(context, {name, description, startDate, projectManagerId}){
+            const projects = await axios.post("http://localhost:8080/project",{
+                name: name,
+                description: description,
+                startDate: startDate,
+                projectManagerId: projectManagerId,
+            },{withCredentials: true});
+            context.commit("setProjects", projects.data);
+        }
     }
 }

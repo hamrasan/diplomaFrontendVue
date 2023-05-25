@@ -8,6 +8,8 @@ export default {
             teams: [],
             teamDetail: null,
             usersModal: [],
+            freeTeamMembers: [],
+            teamAllocations: [],
         };
     },
     mutations: {
@@ -19,6 +21,12 @@ export default {
         },
         setUsersModal(state, usersModal){
             state.usersModal = usersModal;
+        },
+        setFreeTeamMembers(state, freeTeamMembers){
+            state.freeTeamMembers = freeTeamMembers;
+        },
+        setTeamAllocations(state, teamAllocations){
+            state.teamAllocations = teamAllocations;
         }
     },
     actions: {
@@ -36,6 +44,8 @@ export default {
         async addEmployee(context, {employeeId, teamId}) {
             const team = await axios.post("http://localhost:8080/team/" + teamId + "/employee/" + employeeId,{withCredentials: true});
             context.commit("setTeamDetail", team.data);
+            await store.dispatch("team/getFreeTeamMembers", teamId);
+            await store.dispatch("team/getTeamAllocations", teamId);
         },
         async create(context, {name, teamLeaderId}) {
             const teams = await axios.post("http://localhost:8080/team",{
@@ -53,6 +63,16 @@ export default {
         async deleteEmployee(context, {employeeId, teamId}) {
             const team = await axios.post("http://localhost:8080/team/" + teamId + "/delete/employee/" + employeeId,{withCredentials: true});
             context.commit("setTeamDetail", team.data);
+            await store.dispatch("team/getFreeTeamMembers", teamId);
+            await store.dispatch("team/getTeamAllocations", teamId);
+        },
+        async getFreeTeamMembers(context, teamId) {
+            const freeTeamMembers = await axios.get("http://localhost:8080/team/" + teamId + "/free",{withCredentials: true});
+            context.commit("setFreeTeamMembers", freeTeamMembers.data);
+        },
+        async getTeamAllocations(context, teamId) {
+            const teamAllocations = await axios.get("http://localhost:8080/team/" + teamId + "/allocations",{withCredentials: true});
+            context.commit("setTeamAllocations", teamAllocations.data);
         },
     }
 }
