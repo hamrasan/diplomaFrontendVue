@@ -61,7 +61,14 @@ export default {
             const header = {"Content-Type": "multipart/form-data"};
             const formData  = new FormData();
             formData.append("inputFile", data);
-            await axios.post("http://localhost:8080/user/import", formData, {header});
+            await axios.post("http://localhost:8080/user/import/roles", formData, {header});
+        },
+        async importEmployees(context, data){
+            const header = {"Content-Type": "multipart/form-data"};
+            const formData  = new FormData();
+            formData.append("inputFile", data);
+            const employees =await axios.post("http://localhost:8080/user/import/employees", formData, {header});
+            context.commit("setEmployees", employees.data );
         },
         async editEmployee(context, {data, userId}) {
             const employee = await axios.post("http://localhost:8080/user/edit/" + userId, {

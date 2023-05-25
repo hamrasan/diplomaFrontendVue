@@ -15,6 +15,7 @@
             </div>
         </li>
     </ul>
+    <div v-if="this.sourceAllocations.length===0" class="font-weight-bold text-danger d-flex justify-content-center">Nebyly nalezeny žádné alokace na schválení.</div>
 </template>
 
 <script>

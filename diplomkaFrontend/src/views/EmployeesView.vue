@@ -5,6 +5,11 @@
                 + Import rolí <input class="form-control ml-2 px-3 py-2 rounded border yellowColor text-dark" type="file" id="formFile" @change="uploadFile" hidden>
             </label>
         </div>
+        <div class="mb-3 mx-2">
+            <label for="formFileEmp" class="btn ml-2 px-3 py-2 rounded border yellowColor text-dark">
+                + Import zaměstnanů <input class="form-control ml-2 px-3 py-2 rounded border yellowColor text-dark" type="file" id="formFileEmp" @change="uploadFileEmpl" hidden>
+            </label>
+        </div>
     </div>
 
     <div class="input-group rounded">
@@ -41,6 +46,14 @@
             async uploadFile(e){
                 try{
                     this.$store.dispatch("employee/importRoles", e.target.files[0]);
+                }
+                catch (e) {
+
+                }
+            },
+            async uploadFileEmpl(e){
+                try{
+                    this.$store.dispatch("employee/importEmployees", e.target.files[0]);
                 }
                 catch (e) {
 
