@@ -20,9 +20,26 @@
     </ul>
 
     <h4 class="col text-center mt-5">Volné zdroje</h4>
-    <ul class="list-group mt-3" v-for="user in freeTeamMembers">
+    <ul class="list-group mt-3" v-for="user in this.team.users">
         <li class="list-group-item d-flex justify-content-center">
-            <span>{{user.firstName}} {{user.lastName}}</span>
+
+            <div class="accordion pt-2" id="accordionPanelsStayOpen">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="togleOpen('hash', user.id)" aria-expanded="false" :aria-controls="togleOpen(null, user.id)">
+                            {{user.firstName}} {{user.lastName}}
+                        </button>
+                    </h2>
+                    <div :id="togleOpen(null, user.id)" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
+                        <div class="accordion-body">
+                            <div v-for="release in this.releases">
+                                <span class="text-danger">{{release.name}}</span>
+                                <span> -> {{format_date(release.releaseStartDate)}} - {{format_date(release.releaseEndDate)}}  </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </li>
     </ul>
 
@@ -74,12 +91,16 @@
             },
             projects() {
                 return this.$store.state.project.projects;
+            },
+            releases() {
+                return this.$store.state.project.allReleases;
             }
         },
         created(){
             this.$store.dispatch("team/getTeam", this.id);
             this.$store.dispatch("team/getFreeTeamMembers", this.id);
             this.$store.dispatch("team/getTeamAllocations", this.id);
+            this.$store.dispatch("project/fetchAllReleases");
         },
         methods: {
             modalOpen(name) {
@@ -94,6 +115,10 @@
             findProject(id) {
                 return this.projects.filter( project => project.id === id).map(project => project.name)[0];
             },
+            togleOpen(hash, id){
+                if(hash != null) return "#op" + id;
+                else return "op" + id;
+            }
         },
     }
 </script>

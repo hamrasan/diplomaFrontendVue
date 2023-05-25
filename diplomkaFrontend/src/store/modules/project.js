@@ -11,6 +11,7 @@ export default {
             sourceAllocations: [],
             managerProjects: [],
             historyAllocations: [],
+            allReleases: []
         };
     },
     mutations: {
@@ -32,6 +33,9 @@ export default {
         setHistoryAllocations(state, sourceAllocations) {
             state.historyAllocations = sourceAllocations;
         },
+        setAllReleases(state, allReleases) {
+            state.allReleases = allReleases;
+        },
     },
     actions: {
          async fetchRoles(context) {
@@ -48,6 +52,10 @@ export default {
         async fetchProjects(context) {
             const projects = await axios.get("http://localhost:8080/project/all", {withCredentials: true});
             context.commit("setProjects", projects.data);
+        },
+        async fetchAllReleases(context) {
+            const releases = await axios.get("http://localhost:8080/project/releases/all", {withCredentials: true});
+            context.commit("setAllReleases", releases.data);
         },
         async fetchManagerProjects(context, userId) {
             const projects = await axios.get("http://localhost:8080/project/all/" + userId, {withCredentials: true});
