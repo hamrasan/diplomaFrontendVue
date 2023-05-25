@@ -7,7 +7,7 @@
         </div>
         <div class="mb-3 mx-2">
             <label for="formFileEmp" class="btn ml-2 px-3 py-2 rounded border yellowColor text-dark">
-                + Import zaměstnanů <input class="form-control ml-2 px-3 py-2 rounded border yellowColor text-dark" type="file" id="formFileEmp" @change="uploadFileEmpl" hidden>
+                + Import zaměstnanců <input class="form-control ml-2 px-3 py-2 rounded border yellowColor text-dark" type="file" id="formFileEmp" @change="uploadFileEmpl" hidden>
             </label>
         </div>
     </div>

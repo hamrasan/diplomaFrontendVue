@@ -1,13 +1,14 @@
 <template>
     <div class="input-group rounded mb-2">
-        <input type="search" class="form-control rounded" placeholder="Hledat podle zaměstnance..." aria-label="Search"
+        <input type="search" class="form-control rounded" placeholder="Hledat podle alokovaného zaměstnance..." aria-label="Search"
                aria-describedby="search-addon" v-model="input"/>
     </div>
     <table class="table table-bordered">
         <thead class="thead-dark yellowColor">
         <tr>
             <th scope="col">Datum schválení</th>
-            <th scope="col">Jméno</th>
+            <th scope="col">Jméno schvalovatele</th>
+            <th scope="col">Jméno alokovaného</th>
             <th scope="col">Man-days</th>
             <th scope="col">Role</th>
             <th scope="col">Projekt</th>
@@ -16,7 +17,8 @@
         </thead>
         <tbody>
         <tr v-for="allocation in filteredList()">
-            <td>{{format_date(allocation?.confirmOrDenyDate)}}</td>
+            <td>{{format_date_minutes(allocation?.confirmOrDenyDate)}}</td>
+            <td>{{allocation?.confirmed?.firstName + " " + allocation?.confirmed?.lastName}}</td>
             <td>{{allocation?.assigned?.firstName + " " + allocation?.assigned?.lastName}}</td>
             <td>{{allocation?.md}}</td>
             <td>{{allocation?.teamRole?.name }}</td>
@@ -112,6 +114,11 @@
             format_date(value){
                 if (value) {
                     return moment(String(value)).format('DD.MM.YYYY');
+                }
+            },
+            format_date_minutes(value){
+                if (value) {
+                    return moment(String(value)).format('DD.MM.YYYY hh:mm');
                 }
             },
         }

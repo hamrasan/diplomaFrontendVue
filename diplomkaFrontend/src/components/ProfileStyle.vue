@@ -73,7 +73,7 @@
                 <div class="justify-content-center mb-2">
                     <span class="yellowColor rounded p-1 ">Nedostupnosti zaměstnance:</span>
                     <div>
-                        Choroba:
+                        Nemoc:
                     </div>
                     <ul v-for="illness in formatAfterToday(this.user.userIllness)">
                         <li>{{format_date(illness.from)}}-{{format_date(illness.to)}}</li>

@@ -1,6 +1,6 @@
 <template>
     <form>
-        <span class="font-weight-bold">Choroba: </span>
+        <span class="font-weight-bold">Nemoc: </span>
         <div class="form-group d-flex mt-2 justify-content-center mb-3">&nbsp;
             <VueDatePicker v-model="this.illness" range :enable-time-picker="false"/>
             <span v-if="errorIllness===true" class="text-danger">Datum začátku musí být dřív než datum konce.</span>
