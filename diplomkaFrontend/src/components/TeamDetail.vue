@@ -96,9 +96,6 @@
             },
             releases() {
                 return this.$store.state.project.allReleases;
-            },
-            notAvailabilities() {
-                return this.$store.state.team.actualMds;
             }
         },
         created(){
