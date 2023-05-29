@@ -54,7 +54,10 @@
         <div v-for="release in this.project.releases" class="border border-2 rounded">
             <span class="font-weight-bold mt-1 h5">{{release.name}}</span> <span class="h5">{{format_date(release.releaseStartDate)}}-{{format_date(release.releaseEndDate)}}</span>
 
-            <div v-if="release.allocationDto == null">
+<!--            <div v-if="this.project.allocationDto == null">-->
+<!--                Vytvořit rezervaci na release je možné až po zahajení projektu. (Po prvotnej alokaci zdrojů).-->
+<!--            </div>-->
+            <div v-if=" release.allocationDto == null">
                 <button class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('rezervace', release)">
                     Vytvořit rezervaci
                 </button>

@@ -70,6 +70,7 @@
 <script>
     import moment from 'moment';
     import AddDeleteMemberModal from "./AddDeleteMemberModal.vue";
+    import {Axios as axios} from "axios";
     export default {
         name: "TeamDetail",
         components: {AddDeleteMemberModal},
@@ -95,6 +96,9 @@
             },
             releases() {
                 return this.$store.state.project.allReleases;
+            },
+            notAvailabilities() {
+                return this.$store.state.team.actualMds;
             }
         },
         created(){
@@ -126,8 +130,81 @@
                     .forEach(ta => {
                     count += ta.md;
                 });
+                count += this.countHolidaysAndIllness(user, release);
                 if(allMd - count < 0) return 0;
                 return allMd - count;
+            },
+            countHolidaysAndIllness(user, release){
+                let releaseStartDate = new Date(release.releaseStartDate);
+                let releaseEndDate = new Date(release.releaseEndDate);
+                let count = 0;
+                let filteredHolidays;
+                if(user.userHoliday){
+
+                    filteredHolidays = user.userHoliday.filter(holiday =>  new Date(holiday.from) >= releaseStartDate && new Date(holiday.from) <= releaseEndDate)
+                        .filter(holiday => new Date(holiday.to) <= releaseEndDate && new Date(holiday.to) >= releaseStartDate);
+                    filteredHolidays.forEach(holiday => {
+                        count +=  this.countMd(new Date(holiday.from), new Date(holiday.to));
+                        }
+                    );
+
+                }
+                if (user.userIllness){
+                    user.userIllness.filter(illness =>  new Date(illness.from) >= releaseStartDate && new Date(illness.from) <= releaseEndDate)
+                        .filter(illness => new Date(illness.to) <= releaseEndDate && new Date(illness.to) >= releaseStartDate)
+                        .forEach(illness => {
+                        count += this.countMd(new Date(illness.from), new Date(illness.to));
+                        const md = this.countMdSameAsHoliday(filteredHolidays, new Date(illness.from), new Date(illness.to));
+                        count -= md;
+                        }
+                    );
+                }
+                return count;
+            },
+            countMd(startDate, endDate) {
+                let count = 0;
+                const curDate = new Date(startDate.getTime());
+                while (curDate <= endDate) {
+                    const dayOfWeek = curDate.getDay();
+                    if(dayOfWeek !== 0 && dayOfWeek !== 6) count++;
+                    curDate.setDate(curDate.getDate() + 1);
+                }
+                return count;
+            },
+            //vratim cislo kolko mam odpocitat
+            countMdSameAsHoliday(holidays, startDate, endDate){
+                let count = 0;
+                const countIlMd = this.countMd(startDate, endDate);
+                if(holidays != null){
+                    holidays.filter(holiday =>  (new Date(holiday.from) <= startDate && new Date(holiday.to) >= startDate) || (new Date(holiday.to) >= startDate &&  new Date(holiday.from) <= endDate) ||
+                        (new Date(holiday.from) >= startDate && new Date(holiday.to) <= endDate) || (new Date(holiday.to) <= startDate &&  new Date(holiday.from) >= endDate))
+                        .forEach(
+                        holiday => {
+                            const countHolMd = this.countMd(new Date(holiday.from), new Date(holiday.to));
+                            if(new Date(holiday.from) <= startDate && (new Date(holiday.to) >= endDate)){
+                                count = countIlMd;
+                                return count;
+                            }
+                            if(new Date(holiday.from) <= startDate && (new Date(holiday.to) <= endDate)){
+                                count = this.countMd(startDate, new Date(holiday.to));
+                                return count;
+                            }
+                            if (new Date(holiday.to) >= startDate && (new Date(holiday.from) <= endDate) && (new Date(holiday.from) <= startDate)){
+                                count = countIlMd;
+                                return count;
+                            }
+                            if((new Date(holiday.from) >= startDate) && (new Date(holiday.to) <= endDate) ){
+                                count = countHolMd;
+                                return count;
+                            }
+                            if((new Date(holiday.from) >= startDate) && (new Date(holiday.to) >= endDate) && (new Date(holiday.from) <= endDate)){
+                                count = this.countMd(new Date(holiday.from), endDate);
+                                return count;
+                            }
+                        }
+                    )
+                }
+                return count;
             }
         },
     }

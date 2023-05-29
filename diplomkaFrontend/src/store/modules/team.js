@@ -27,7 +27,7 @@ export default {
         },
         setTeamAllocations(state, teamAllocations){
             state.teamAllocations = teamAllocations;
-        }
+        },
     },
     actions: {
         async fetchTeamsByLeader(context, teamLeaderId) {
@@ -74,5 +74,5 @@ export default {
             const teamAllocations = await axios.get("http://localhost:8080/team/" + teamId + "/allocations",{withCredentials: true});
             context.commit("setTeamAllocations", teamAllocations.data);
         },
-    }
+}
 }
