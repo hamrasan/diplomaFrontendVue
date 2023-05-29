@@ -6,7 +6,7 @@
         </div>
             <div class="mb-3">
                 <button class="ml-2 rounded border yellowColor text-dark px-3 py-2" @click="modalOpen('add')">+ Přidat člena</button>
-                <button class="ml-2 rounded border yellowColor text-dark px-3 py-2" @click="modalOpen('delete')">+ Odebrat člena</button>
+                <button class="ml-2 rounded border yellowColor text-dark px-3 py-2" @click="modalOpen('delete')">- Odebrat člena</button>
             </div>
     </div>
     <ul class="list-group mt-3" v-for="user in this.team.users">
@@ -34,7 +34,8 @@
                         <div class="accordion-body">
                             <div v-for="release in this.releases">
                                 <span class="text-danger">{{release.name}}</span>
-                                <span> -> {{format_date(release.releaseStartDate)}} - {{format_date(release.releaseEndDate)}}  </span>
+                                <span> ({{format_date(release.releaseStartDate)}} - {{format_date(release.releaseEndDate)}})</span>
+                                <span> -> {{getFreeMdOfUser(user, release, release.maxMd * user.availability / 100)}} volných z {{release.maxMd * user.availability / 100}} MD </span>
                             </div>
                         </div>
                     </div>
@@ -118,6 +119,15 @@
             togleOpen(hash, id){
                 if(hash != null) return "#op" + id;
                 else return "op" + id;
+            },
+            getFreeMdOfUser(user, release, allMd){
+                let count = 0;
+                this.teamAllocations.filter(teamAllocation => teamAllocation.assigned.id === user.id && teamAllocation.startDate === release.releaseStartDate && teamAllocation.endDate === release.releaseEndDate)
+                    .forEach(ta => {
+                    count += ta.md;
+                });
+                if(allMd - count < 0) return 0;
+                return allMd - count;
             }
         },
     }
