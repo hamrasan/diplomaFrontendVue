@@ -10,6 +10,8 @@ export default {
             usersModal: [],
             freeTeamMembers: [],
             teamAllocations: [],
+            teamRoles: [],
+            rolesMd: []
         };
     },
     mutations: {
@@ -28,6 +30,12 @@ export default {
         setTeamAllocations(state, teamAllocations){
             state.teamAllocations = teamAllocations;
         },
+        setTeamRoles(state, teamRoles){
+            state.teamRoles = teamRoles;
+        },
+        setRolesAndMd(state, rolesMd){
+            state.rolesMd = rolesMd;
+        }
     },
     actions: {
         async fetchTeamsByLeader(context, teamLeaderId) {
@@ -74,5 +82,14 @@ export default {
             const teamAllocations = await axios.get("http://localhost:8080/team/" + teamId + "/allocations",{withCredentials: true});
             context.commit("setTeamAllocations", teamAllocations.data);
         },
+        async getTeamRoles(context) {
+            const teamRoles = await axios.get("http://localhost:8080/team/roles",{withCredentials: true});
+            context.commit("setTeamRoles", teamRoles.data);
+        },
+        async getRolesAndMD(context, releaseName) {
+            const teamRoles = await axios.get("http://localhost:8080/project/sourceAllocations/resourceManager/"+ releaseName,{withCredentials: true});
+            context.commit("setRolesAndMd", teamRoles.data);
+        },
+
 }
 }

@@ -6,6 +6,7 @@ import TeamsView from '../views/TeamsView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import ProjectsView from '../views/ProjectsView.vue';
 import ManagerProjectsView from '../views/ManagerProjectsView.vue';
+import ResourceManagerView from '../views/ResourceManagerView.vue';
 import AllocationHistoryView from '../views/AllocationHistoryView.vue';
 import EmployeesView from '../views/EmployeesView.vue';
 import EmployeeDetail from '../components/EmployeeDetail.vue';
@@ -52,6 +53,12 @@ const router = createRouter({
             name: 'managerProjects',
             component: ManagerProjectsView,
             meta: {isLogged: true, hasRoleTeamLeader: true}
+        },
+        {
+            path: '/resource-view',
+            name: 'resourceManager',
+            component: ResourceManagerView,
+            meta: {isLogged: true}
         },
         {
             path: '/my-teams',

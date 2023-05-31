@@ -228,7 +228,7 @@
                     this.allocations.push(JSON.parse(JSON.stringify(this.project.allocationDto.sourceAllocations[i])));
                 }
             }
-            else if(this.release.allocationDto != null){
+            else if(this.release != null && this.release.allocationDto != null && this.release.allocationDto.requirements != null){
                 for (let i = 0; i < this.release.allocationDto.requirements.length; i++) {
                     this.requirements.push(JSON.parse(JSON.stringify(this.release.allocationDto.requirements[i])));
                 }
