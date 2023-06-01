@@ -38,7 +38,7 @@
         computed: {
             rolesMd() {
                 this.arrays = [];
-                let roles = this.$store.state.team.rolesMd;
+                let roles = this.$store.state.team.rolesMd.filter(role => role.maxMd > 0);
                 let j = 25;
                 if(roles.length < 25) j = roles.length;
                 for (let i = 0; i < roles.length; i += j) {
