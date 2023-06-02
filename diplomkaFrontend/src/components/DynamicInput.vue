@@ -220,15 +220,15 @@
         },
         created() {
             this.$store.dispatch("project/fetchRoles");
-            if (this.project.allocationDto != null && this.release == null) {
-                for (let i = 0; i < this.project.allocationDto.requirements.length; i++) {
-                    this.requirements.push(JSON.parse(JSON.stringify(this.project.allocationDto.requirements[i])));
-                }
-                for (let i = 0; i < this.project.allocationDto.sourceAllocations.length; i++) {
-                    this.allocations.push(JSON.parse(JSON.stringify(this.project.allocationDto.sourceAllocations[i])));
-                }
-            }
-            else if(this.release != null && this.release.allocationDto != null && this.release.allocationDto.requirements != null){
+            // if (this.project.allocationDto != null && this.release == null) {
+            //     for (let i = 0; i < this.project.allocationDto.requirements.length; i++) {
+            //         this.requirements.push(JSON.parse(JSON.stringify(this.project.allocationDto.requirements[i])));
+            //     }
+            //     for (let i = 0; i < this.project.allocationDto.sourceAllocations.length; i++) {
+            //         this.allocations.push(JSON.parse(JSON.stringify(this.project.allocationDto.sourceAllocations[i])));
+            //     }
+            // }
+             if(this.release != null && this.release.allocationDto != null && this.release.allocationDto.requirements != null){
                 for (let i = 0; i < this.release.allocationDto.requirements.length; i++) {
                     this.requirements.push(JSON.parse(JSON.stringify(this.release.allocationDto.requirements[i])));
                 }

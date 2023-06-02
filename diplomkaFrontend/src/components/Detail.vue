@@ -22,23 +22,6 @@
             <h5 class="col">{{toCzStatus(this.project.allocationDto.status)}}</h5>
         </div>
     </div>
-<!--    <div class="d-flex justify-content-center" v-if="this.project.allocationDto">-->
-<!--        <div>-->
-<!--            <h5 class="col">{{format_date(this.project.allocationDto.reservationDate)}}</h5>-->
-<!--        </div>-->
-<!--    </div>-->
-
-    <h4 v-if="this.project.allocationDto == null" class="text-danger d-flex justify-content-center"> Rezervace zdrojů nebyla vytvořena</h4>
-    <div class="d-flex justify-content-center" v-if="this.project.allocationDto == null ">
-        <button class="mt-4 rounded border py-2 yellowColor text-dark col-1" @click="modalOpen('rezervace', null)">
-            Vytvořit rezervaci
-        </button>
-    </div>
-    <div class="d-flex justify-content-center" v-if="this.project.allocationDto != null && this.project.allocationDto.status === 'ESTABLISHED' && this.isProjectManager">
-        <button class="mt-4 rounded border py-2 yellowColor text-dark col-1" @click="modalOpen('alokace', null)">
-            Vytvořit alokaci
-        </button>
-    </div>
 
     <div v-if="this.project.allocationDto != null && this.project.allocationDto.status !== 'ESTABLISHED'">
         <div class="d-flex align-items-center flex-column alert alert-dark mt-4" v-if="this.project.allocationDto.sourceAllocations">
@@ -54,10 +37,10 @@
         <div v-for="release in this.project.releases" class="border border-2 rounded">
             <span class="font-weight-bold mt-1 h5">{{release.name}}</span> <span class="h5">{{format_date(release.releaseStartDate)}}-{{format_date(release.releaseEndDate)}}</span>
 
-<!--            <div v-if="this.project.allocationDto == null">-->
-<!--                Vytvořit rezervaci na release je možné až po zahajení projektu. (Po prvotnej alokaci zdrojů).-->
-<!--            </div>-->
-            <div v-if=" release.allocationDto == null">
+            <div  v-if="release.allocationDto == null && history_date(release.releaseEndDate)">
+                Release uplynul
+            </div>
+            <div v-if=" release.allocationDto == null && !history_date(release.releaseEndDate)">
                 <button class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('rezervace', release)">
                     Vytvořit rezervaci
                 </button>
@@ -157,6 +140,11 @@
             format_date(value){
                 if (value) {
                     return moment(String(value)).format('DD.MM.YYYY');
+                }
+            },
+            history_date(value){
+                if (value) {
+                    return moment(String(value)) < moment();
                 }
             },
         }
