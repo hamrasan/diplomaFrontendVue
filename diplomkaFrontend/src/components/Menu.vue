@@ -12,7 +12,8 @@
                 <ul class="dropdown-menu pt-0" aria-labelledby="dropdownMenuButton1" role="menu">
                     <li :key="option1">
                         <router-link v-if="isLogged" to="/employees" class="nav-link dropdown-item bg-dark"><span>Zaměstnanci</span></router-link>
-                        <router-link v-if="isLogged" to="/resource-view" class="nav-link"><span>Pohled manažera</span></router-link>
+                        <router-link v-if="isLogged && isResourceManager" to="/resource-view" class="nav-link"><span>Pohled manažera</span></router-link>
+                        <router-link v-if="isLogged && isTeamLeader" to="/resource-view-team" class="nav-link"><span>Pohled tým lídra</span></router-link>
                         <router-link v-if="isLogged" to="/projects" class="nav-link dropdown-item bg-dark"><span>Projekty</span></router-link>
                         <router-link v-if="isTeamLeader" to="/my-projects" class="nav-link dropdown-item bg-dark"><span>Alokace na projekty</span></router-link>
                         <router-link v-if="isTeamLeader" to="/my-teams" class="nav-link dropdown-item bg-dark"><span>Moje tými</span></router-link>
@@ -29,8 +30,11 @@
                 <li class="nav-item" v-if="isLogged">
                     <router-link to="/employees" class="nav-link"><span>Zaměstnanci</span></router-link>
                 </li>
-                <li class="nav-item" v-if="isLogged">
+                <li class="nav-item" v-if="isLogged && isResourceManager">
                     <router-link to="/resource-view" class="nav-link"><span>Pohled manažera</span></router-link>
+                </li>
+                <li class="nav-item" v-if="isLogged && isTeamLeader">
+                    <router-link to="/resource-view-team" class="nav-link"><span>Pohled tým lídra</span></router-link>
                 </li>
                 <li class="nav-item" v-if="isLogged">
                     <router-link to="/projects" class="nav-link"><span>Projekty</span></router-link>
@@ -121,6 +125,9 @@
             },
             isTeamLeader() {
                 return this.$store.getters.hasRoleTeamLeader();
+            },
+            isResourceManager() {
+                return this.$store.getters.hasRoleResourceManager();
             },
             notifications() {
                 return this.$store.getters.notifications();

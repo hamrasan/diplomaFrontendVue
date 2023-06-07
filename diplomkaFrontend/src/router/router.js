@@ -7,6 +7,7 @@ import RegisterView from '../views/RegisterView.vue';
 import ProjectsView from '../views/ProjectsView.vue';
 import ManagerProjectsView from '../views/ManagerProjectsView.vue';
 import ResourceManagerView from '../views/ResourceManagerView.vue';
+import TeamLeaderView from '../views/TeamLeaderView.vue';
 import AllocationHistoryView from '../views/AllocationHistoryView.vue';
 import EmployeesView from '../views/EmployeesView.vue';
 import EmployeeDetail from '../components/EmployeeDetail.vue';
@@ -58,7 +59,13 @@ const router = createRouter({
             path: '/resource-view',
             name: 'resourceManager',
             component: ResourceManagerView,
-            meta: {isLogged: true}
+            meta: {isLogged: true, hasRoleResourceManager: true}
+        },
+        {
+            path: '/resource-view-team',
+            name: 'teamLeaderView',
+            component: TeamLeaderView,
+            meta: {isLogged: true, hasRoleTeamLeader: true}
         },
         {
             path: '/my-teams',
@@ -120,6 +127,14 @@ router.beforeEach(async (to, from) => {
             }
         }
     }
+    else if(to.meta.hasRoleTeamLeader === true && to.meta.hasRoleResourceManager === true){
+        if (store.getters.hasRoleTeamLeader() !== to.meta.hasRoleTeamLeader && store.getters.hasRoleResourceManager() !== to.meta.hasRoleResourceManager) {
+            return {
+                name: 'home',
+                replace: true
+            }
+        }
+    }
     else if(to.meta.hasRoleProjectManager != null){
         if (store.getters.hasRoleProjectManager() !== to.meta.hasRoleProjectManager) {
             return {
@@ -130,6 +145,14 @@ router.beforeEach(async (to, from) => {
     }
     else if(to.meta.hasRoleTeamLeader != null){
         if (store.getters.hasRoleTeamLeader() !== to.meta.hasRoleTeamLeader) {
+            return {
+                name: 'home',
+                replace: true
+            }
+        }
+    }
+    else if(to.meta.hasRoleResourceManager != null){
+        if (store.getters.hasRoleResourceManager() !== to.meta.hasRoleResourceManager) {
             return {
                 name: 'home',
                 replace: true
