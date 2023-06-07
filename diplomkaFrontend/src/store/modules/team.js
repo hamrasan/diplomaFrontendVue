@@ -11,7 +11,8 @@ export default {
             freeTeamMembers: [],
             teamAllocations: [],
             teamRoles: [],
-            rolesMd: []
+            rolesMd: [],
+            rolesMdTeam: []
         };
     },
     mutations: {
@@ -35,6 +36,9 @@ export default {
         },
         setRolesAndMd(state, rolesMd){
             state.rolesMd = rolesMd;
+        },
+        setRolesAndMdTeam(state, rolesMdTeam){
+            state.rolesMdTeam = rolesMdTeam;
         }
     },
     actions: {
@@ -89,6 +93,10 @@ export default {
         async getRolesAndMD(context, releaseName) {
             const teamRoles = await axios.get("http://localhost:8080/project/sourceAllocations/resourceManager/"+ releaseName,{withCredentials: true});
             context.commit("setRolesAndMd", teamRoles.data);
+        },
+        async getRolesAndMDTeam(context, {releaseName, teamId}) {
+            const teamRoles = await axios.get("http://localhost:8080/project/resourceManager/"+ teamId + "/release/" +releaseName,{withCredentials: true});
+            context.commit("setRolesAndMdTeam", teamRoles.data);
         },
 
 }

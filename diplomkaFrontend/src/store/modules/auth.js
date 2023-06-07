@@ -37,6 +37,12 @@ export default {
 
             return state.user?.teamRole.name === "Change Coordinator - Project Manager";
         },
+        hasRoleResourceManager: state => () => {
+            if(state.user?.teamRole == null)
+                return false;
+
+            return state.user?.teamRole.name === "Resource Manager";
+        },
         hasRoleTeamLeader: state => () => {
             if(state.user?.teamRole == null)
                 return false;
