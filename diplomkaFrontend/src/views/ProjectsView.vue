@@ -8,10 +8,10 @@
     </div>
     <ul class="list-group mt-3" v-for="project in filteredList()">
         <li class="list-group-item d-flex justify-content-between">
-            <span>{{project.name}}</span>
-            <span>{{toCzPhase(project.projectPhase)}}</span>
-            <span></span>
-            <router-link :to="{ name: 'detail', params: { id: project.id }, emits: {toCzStatus}}" class="nav-link">
+            <div class="col-3">{{project.name}}</div>
+            <div class="col-5 text-center">{{toCzPhase(project.projectPhase)}}</div>
+            <div class="col-2"></div>
+            <router-link :to="{ name: 'detail', params: { id: project.id }, emits: {toCzStatus}}" class="nav-link col-1">
                 <button class="ml-2 rounded border yellowColor text-dark">Detail</button>
             </router-link>
         </li>

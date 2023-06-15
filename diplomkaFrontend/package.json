@@ -32,7 +32,8 @@
     "vue3-cookies": "^1.0.6",
     "vue3-datepicker": "^0.2.4",
     "vuetify": "^3.1.10",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "lodash": "latest"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",

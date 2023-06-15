@@ -23,29 +23,31 @@
         </div>
     </div>
 
-    <div v-if="this.project.allocationDto != null && this.project.allocationDto.status !== 'ESTABLISHED'">
-        <div class="d-flex align-items-center flex-column alert alert-dark mt-4" v-if="this.project.allocationDto.sourceAllocations">
-            <div class="font-weight-bold">ALOKACE ZDROJŮ:</div>
-            <ul v-for="source in this.project.allocationDto.sourceAllocations">
-                <li>{{source.md + "MD - " + source.assigned.firstName + " " + source.assigned.lastName + " ( " + source.teamRole.name + " ) - "}} <span class="text-danger">{{toCzStatus(source.status)}} </span></li>
-            </ul>
-        </div>
-    </div>
+<!--    <div v-if="this.project.allocationDto != null && this.project.allocationDto.status !== 'ESTABLISHED'">-->
+<!--        <div class="d-flex align-items-center flex-column alert alert-dark mt-4" v-if="this.project.allocationDto.sourceAllocations">-->
+<!--            <div class="font-weight-bold">ALOKACE ZDROJŮ:</div>-->
+<!--            <ul v-for="source in this.project.allocationDto.sourceAllocations">-->
+<!--                <li>{{source.md + "MD - " + source.assigned.firstName + " " + source.assigned.lastName + " ( " + source.teamRole.name + " ) - "}} <span class="text-danger">{{toCzStatus(source.status)}} </span></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
 
     <div class="d-flex justify-content-center flex-column mt-4" v-if="this.project.releases">
         <h3 class="font-weight-bold">Releasy v projektu:</h3>
-        <div v-for="release in this.project.releases" class="border border-2 rounded">
-            <span class="font-weight-bold mt-1 h5">{{release.name}}</span> <span class="h5">{{format_date(release.releaseStartDate)}}-{{format_date(release.releaseEndDate)}}</span>
+        <div v-for="release in releasesOrdered(this.project.releases) " class="border border-2 rounded pb-2">
+            <div class="text-center mt-1">
+                <span class="font-weight-bold mt-1 h5">{{release.name}}</span> <span class="h5">( {{format_date(release.releaseStartDate)}}-{{format_date(release.releaseEndDate)}} )</span>
+            </div>
 
-            <div  v-if="release.allocationDto == null && history_date(release.releaseEndDate)">
+            <div class="text-center" v-if="release.allocationDto == null && history_date(release.releaseEndDate)">
                 Release uplynul
             </div>
-            <div v-if=" release.allocationDto == null && !history_date(release.releaseEndDate)">
+            <div class="text-center" v-if=" release.allocationDto == null && !history_date(release.releaseEndDate)">
                 <button class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('rezervace', release)">
                     Vytvořit rezervaci
                 </button>
             </div>
-            <div v-if="release.allocationDto && release.allocationDto.status === 'ESTABLISHED' && this.isProjectManager">
+            <div class="text-center" v-if="release.allocationDto && release.allocationDto.status === 'ESTABLISHED' && this.isProjectManager">
                 <button class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('alokace', release)">
                     Vytvořit alokaci
                 </button>
@@ -68,6 +70,8 @@
 <script>
     import DynamicInput from "./DynamicInput.vue";
     import moment from 'moment';
+    import _ from 'lodash';
+
     export default {
         name: "Detail",
         components: {DynamicInput},
@@ -146,6 +150,15 @@
                 if (value) {
                     return moment(String(value)) < moment();
                 }
+            },
+            releasesOrdered(releases) {
+                if(releases != null){
+                    const sortedArray = _.orderBy(releases, (o) => {
+                        return moment(String(o.releaseStartDate)).format('YYYYMMDD');
+                    }, ['asc']);
+                    return sortedArray;
+                    }
+                else return [];
             },
         }
     }
