@@ -51,14 +51,18 @@
                 <button v-if="this.isTeamLeader" class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('alokace', release)">
                     Vytvořit alokaci
                 </button>
-                <span v-if="this.isProjectManager" class="d-flex align-items-center flex-column alert alert-dark mt-1 mb-0"> Rezervace byla vytvořena {{format_date(release.allocationDto.reservationDate)}} <span class="text-danger"> Čeká na alokaci </span></span>
+                <span v-if="!this.isTeamLeader" class="text-danger"> {{toCzStatus(release.allocationDto.status, format_date(release.allocationDto.reservationDate))}} </span>
             </div>
 
             <div v-if="release.allocationDto != null && release.allocationDto.status !== 'ESTABLISHED'">
                 <div class="d-flex align-items-center flex-column alert alert-dark mt-1 mb-0" v-if="release.allocationDto.sourceAllocations">
                     <div class="font-weight-bold">ALOKACE ZDROJŮ:</div>
                     <ul v-for="source in release.allocationDto.sourceAllocations">
-                        <li>{{source.md + "MD - " + source.assigned.firstName + " " + source.assigned.lastName + " ( " + source.teamRole.name + " ) - "}} <span class="text-danger">{{toCzStatus(source.status)}} </span></li>
+                        <li>{{source.md + "MD - " + source.assigned.firstName + " " + source.assigned.lastName + " ( " + source.teamRole.name + " ) - "}}
+                            <span class="redColor radiusText p-1" v-if="source.status === 'DENINED'"> {{toCzStatus(source.status)}} </span>
+                            <span class="lightGreenColor radiusText p-1" v-if="source.status === 'CONFIRMED'"> {{toCzStatus(source.status)}} </span>
+                            <span class="yellowColor radiusText p-1" v-if="source.status === 'INPROGRESS'"> {{toCzStatus(source.status)}} </span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -104,9 +108,10 @@
                 this.modalRelease = release;
                 this.isModalOpen = true;
             },
-            toCzStatus(status) {
+            toCzStatus(status, date) {
                 switch (status) {
                     case 'ESTABLISHED' : {
+                        if(date != null) return "Rezervováno (" + date +") - připravené pro alokaci zdrojů";
                         return "Rezervováno - připravené pro alokaci zdrojů";
                     }
                     case 'ALLOCATED' : {
