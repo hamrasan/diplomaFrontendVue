@@ -34,27 +34,28 @@
 
     <div class="d-flex justify-content-center flex-column mt-4" v-if="this.project.releases">
         <h3 class="font-weight-bold">Releasy v projektu:</h3>
-        <div v-for="release in releasesOrdered(this.project.releases) " class="border border-2 rounded pb-2">
+        <div v-for="release in releasesOrdered(this.project.releases) " class="border border-2 rounded mb-3">
             <div class="text-center mt-1">
                 <span class="font-weight-bold mt-1 h5">{{release.name}}</span> <span class="h5">( {{format_date(release.releaseStartDate)}}-{{format_date(release.releaseEndDate)}} )</span>
             </div>
 
-            <div class="text-center" v-if="release.allocationDto == null && history_date(release.releaseEndDate)">
+            <div class="text-center alert alert-dark mb-0 mt-1" v-if="release.allocationDto == null && history_date(release.releaseEndDate)">
                 Release uplynul
             </div>
-            <div class="text-center" v-if=" release.allocationDto == null && !history_date(release.releaseEndDate)">
+            <div class="text-center" v-if=" release.allocationDto == null && !history_date(release.releaseEndDate) && this.isProjectManager">
                 <button class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('rezervace', release)">
                     Vytvořit rezervaci
                 </button>
             </div>
-            <div class="text-center" v-if="release.allocationDto && release.allocationDto.status === 'ESTABLISHED' && this.isProjectManager">
-                <button class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('alokace', release)">
+            <div class="text-center" v-if="release.allocationDto && release.allocationDto.status === 'ESTABLISHED'">
+                <button v-if="this.isTeamLeader" class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('alokace', release)">
                     Vytvořit alokaci
                 </button>
+                <span v-if="this.isProjectManager" class="d-flex align-items-center flex-column alert alert-dark mt-1 mb-0"> Rezervace byla vytvořena {{format_date(release.allocationDto.reservationDate)}} <span class="text-danger"> Čeká na alokaci </span></span>
             </div>
 
             <div v-if="release.allocationDto != null && release.allocationDto.status !== 'ESTABLISHED'">
-                <div class="d-flex align-items-center flex-column alert alert-dark mt-4" v-if="release.allocationDto.sourceAllocations">
+                <div class="d-flex align-items-center flex-column alert alert-dark mt-1 mb-0" v-if="release.allocationDto.sourceAllocations">
                     <div class="font-weight-bold">ALOKACE ZDROJŮ:</div>
                     <ul v-for="source in release.allocationDto.sourceAllocations">
                         <li>{{source.md + "MD - " + source.assigned.firstName + " " + source.assigned.lastName + " ( " + source.teamRole.name + " ) - "}} <span class="text-danger">{{toCzStatus(source.status)}} </span></li>
@@ -89,6 +90,9 @@
             },
             isProjectManager() {
                 return this.$store.getters.hasRoleProjectManager();
+            },
+            isTeamLeader() {
+                return this.$store.getters.hasRoleTeamLeader();
             }
         },
         created(){
