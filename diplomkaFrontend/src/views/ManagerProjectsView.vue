@@ -4,14 +4,14 @@
                aria-describedby="search-addon" v-model="input"/>
     </div>
     <ul class="list-group mt-3" v-for="allocation in filteredList()">
-        <li class="list-group-item d-flex justify-content-between">
-            <span>{{allocation?.assigned?.firstName + " " + allocation?.assigned?.lastName}}</span>
-            <span>{{allocation?.md}}MD</span>
-            <span>{{allocation?.teamRole?.name }}</span>
-            <span>{{ findProject(allocation.projectId)}} ( {{format_date(allocation?.startDate)}}-{{format_date(allocation?.endDate)}} )</span>
-            <div v-if="allocation.status === 'INPROGRESS'">
-                <button class="ml-2 rounded border greenColor text-dark" @click="confirm(allocation)">Schválit</button>
-                <button class="ml-2 rounded border redColor text-dark" @click="refuse(allocation)">Zamítnout</button>
+        <li class="list-group-item d-flex justify-content-between" >
+            <div class="col-2">{{allocation?.assigned?.firstName + " " + allocation?.assigned?.lastName}}</div>
+            <div class="col-1">{{allocation?.md}}MD</div>
+            <div class="col-3">{{allocation?.teamRole?.name }}</div>
+            <div class="col-4">{{ findProject(allocation.projectId)}} ( {{format_date(allocation?.startDate)}}-{{format_date(allocation?.endDate)}} )</div>
+            <div v-if="allocation.status === 'INPROGRESS'" class="col-2 justify-content-end d-flex">
+                <button class="rounded border greenColor text-dark" @click="confirm(allocation)">Schválit</button>
+                <button class=" rounded border redColor text-dark" @click="refuse(allocation)">Zamítnout</button>
             </div>
         </li>
     </ul>

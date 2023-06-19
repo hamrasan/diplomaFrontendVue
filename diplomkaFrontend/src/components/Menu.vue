@@ -43,7 +43,7 @@
                     <router-link to="/my-projects" class="nav-link"><span>Alokace na projekty</span></router-link>
                 </li>
                 <li class="nav-item" v-if="isTeamLeader  || isAdmin">
-                    <router-link to="/my-teams" class="nav-link"><span>Moje tými</span></router-link>
+                    <router-link to="/my-teams" class="nav-link"><span>Moje týmy</span></router-link>
                 </li>
                 <li class="nav-item" v-if="isTeamLeader || isProjectManager || isAdmin">
                     <router-link to="/history" class="nav-link"><span>Historie alokací</span></router-link>

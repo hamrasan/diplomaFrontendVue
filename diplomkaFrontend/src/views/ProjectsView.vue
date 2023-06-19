@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center" v-if="isProjectManager">
         <button class="ml-2 px-3 py-2 mb-2 rounded border yellowColor text-dark" @click="modalOpen()">+ Vytvořit</button>
     </div>
     <div class="input-group rounded">
@@ -41,6 +41,9 @@
             user() {
                 return this.$store.state.auth.user;
             },
+            isProjectManager() {
+                return this.$store.getters.hasRoleProjectManager();
+            }
         },
         created() {
             this.$store.dispatch("project/fetchProjects");

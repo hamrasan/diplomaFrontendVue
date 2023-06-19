@@ -45,7 +45,11 @@
     </ul>
 
     <h4 class="col text-center mt-5">Budoucí alokace členů</h4>
-    <table class="table table-bordered">
+    <div class="input-group rounded">
+        <input type="search" class="form-control rounded" placeholder="Hledat alokace podle člena..." aria-label="Search"
+               aria-describedby="search-addon" v-model="input"/>
+    </div>
+    <table class="table table-bordered mt-1">
         <thead class="thead-dark yellowColor">
         <tr>
             <th scope="col">Jméno</th>
@@ -55,7 +59,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="allocation in teamAllocations">
+        <tr v-for="allocation in filteredList()">
             <td>{{allocation?.assigned?.firstName + " " + allocation?.assigned?.lastName}}</td>
             <td>{{allocation?.md}}</td>
             <td>{{ findProject(allocation.projectId)}} </td>
@@ -79,6 +83,7 @@
             return{
                 isModalOpen: false,
                 action: "add",
+                input: ""
             }
         },
         computed: {
@@ -202,6 +207,14 @@
                     )
                 }
                 return count;
+            },
+            filteredList() {
+                if(this.teamAllocations != null){
+                    return this.teamAllocations.filter( (allocation) =>
+                        allocation?.assigned?.firstName.toLowerCase().includes(this.input.toLowerCase()) || allocation?.assigned?.lastName.toLowerCase().includes(this.input.toLowerCase())
+                    );
+                }
+                else return [];
             }
         },
     }
