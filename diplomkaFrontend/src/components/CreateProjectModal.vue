@@ -14,6 +14,7 @@
                 <div class="form-group">
                     <label for="name">Jméno:</label>
                     <input type="text" class="form-control" id="name" aria-describedby="name"  v-model="this.name" placeholder="Vlož jméno projektu">
+                    <span v-if="errorName===true" class="text-danger">Musíte zadat jméno projektu.</span>
                 </div>
                 <div class="form-group">
                     <label for="description">Popis:</label>
@@ -51,6 +52,7 @@
                 startDate: null,
                 errorUser: false,
                 errorDate: false,
+                errorName: false,
                 from: new Date(),
             };
         },
@@ -61,6 +63,9 @@
             },
             startDate(newValue, oldValue) {
                 if (newValue != null && this.errorDate === true) this.errorDate = false;
+            },
+            name(newValue, oldValue){
+                if (newValue != null && newValue !== "" && this.errorName === true) this.errorName = false;
             }
         },
         methods: {
@@ -70,6 +75,7 @@
             async create() {
                 if (this.errorUser === true || this.name === "" || this.startDate === null) {
                     if (this.startDate === null) this.errorDate = true;
+                    if (this.name === "") this.errorName = true;
                     return;
                 }
                 this.$store.dispatch("project/createProject", {
