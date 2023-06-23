@@ -59,7 +59,7 @@
                     <div class="font-weight-bold">ALOKACE ZDROJŮ:</div>
                     <ul v-for="source in release.allocationDto.sourceAllocations">
                         <li>{{source.md + "MD - " + source.assigned.firstName + " " + source.assigned.lastName + " ( " + source.teamRole.name + " ) - "}}
-                            <span class="redColor radiusText p-1" v-if="source.status === 'DENINED'"> {{toCzStatus(source.status)}} </span>
+                            <span class="redColor radiusText p-1" v-if="source.status === 'DENIED'"> {{toCzStatus(source.status)}} </span>
                             <span class="lightGreenColor radiusText p-1" v-if="source.status === 'CONFIRMED'"> {{toCzStatus(source.status)}} </span>
                             <span class="yellowColor radiusText p-1" v-if="source.status === 'INPROGRESS'"> {{toCzStatus(source.status)}} </span>
                         </li>
@@ -120,7 +120,7 @@
                     case 'CONFIRMED' : {
                         return "Alokace schválená";
                     }
-                    case 'DENINED' : {
+                    case 'DENIED' : {
                         return "Alokace zamítnuta";
                     }
                     case 'INPROGRESS' : {
