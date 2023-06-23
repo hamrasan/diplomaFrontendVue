@@ -74,6 +74,7 @@ export default {
 
              if (user.data) {
                  context.commit("setUser", user.data);
+                 router.push({ name: 'home'})
              }
          },
         async logout(context) {
