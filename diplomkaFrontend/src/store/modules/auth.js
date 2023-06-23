@@ -4,12 +4,16 @@ import router from "../../router/router";
 export default {
     state() {
         return {
-            user: null
+            user: null,
+            badCredentials: false,
         };
     },
     mutations: {
         setUser(state, user) {
             state.user = user;
+        },
+        setBadCredentials(state, credentials) {
+            state.badCredentials = credentials;
         },
     },
     getters: {
@@ -70,11 +74,17 @@ export default {
              const user = await axios.post("http://localhost:8080/login", {
                  email: email,
                  password: password
-             }, {withCredentials: true});
+             }, {withCredentials: true}).catch(function (error) {
+                 context.commit("setBadCredentials", true);
+             });
 
              if (user.data) {
                  context.commit("setUser", user.data);
+                 context.commit("setBadCredentials", false);
                  router.push({ name: 'home'})
+             }
+             else {
+                 context.commit("setBadCredentials", true);
              }
          },
         async logout(context) {

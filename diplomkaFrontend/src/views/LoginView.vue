@@ -9,7 +9,7 @@
                     <label for="password">Heslo</label>
                     <input type="password" class="form-control" id="password" placeholder="Heslo" v-model="password">
                 </div>
-                <div v-if="badCredentials" class="align-items-center text-danger">
+                <div v-if="this.badCredentials" class="align-items-center text-danger">
                    Zadali jste špatné jméno nebo heslo.
                 </div>
                 <div class="mt-4 align-items-center">
@@ -28,14 +28,17 @@
             return {
                 email: null,
                 password: null,
-                badCredentials: false,
+
             };
+        },
+        computed: {
+            badCredentials(){
+               return this.$store.state.auth.badCredentials;
+            }
         },
         methods: {
             login(){
                 this.$store.dispatch('login', {email: this.email, password: this.password});
-                const user =  this.$store.state.auth.user;
-                this.badCredentials = !user;
             }
         }
     }
