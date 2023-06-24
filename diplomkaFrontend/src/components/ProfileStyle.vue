@@ -140,13 +140,19 @@
                     return moment(String(value)).format('DD.MM.YYYY');
                 }
             },
+            format_date2(value){
+                if (value) {
+                    return moment(String(value)).format('YYYY-MM-DD');
+                }
+            },
             compare_date(value1, value2){
                 if (value1 && value2) {
-                    return moment(String(value1)).isAfter(String(value2));
+                    console.log(moment(String(value1)).isSameOrAfter(String(value2)));
+                    return moment(String(value1)).isSameOrAfter(String(value2));
                 }
             },
             formatAfterToday(list) {
-                return list.filter(date => this.compare_date(date.to, new Date()));
+                return list.filter(date => this.compare_date(date.to, this.format_date2(new Date()) ));
             }
         },
         watch: {
