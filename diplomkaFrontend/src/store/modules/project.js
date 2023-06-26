@@ -65,6 +65,10 @@ export default {
             const myAllocations = await axios.get("http://localhost:8080/project/sourceAllocations/" + userId, {withCredentials: true});
             context.commit("setSourceAllocations", myAllocations.data);
         },
+        async fetchAllAllocations(context) {
+            const myAllocations = await axios.get("http://localhost:8080/project/sourceAllocations", {withCredentials: true});
+            context.commit("setSourceAllocations", myAllocations.data);
+        },
         async fetchHistoryAllocations(context) {
             const allocations = await axios.get("http://localhost:8080/project/sourceAllocations/history", {withCredentials: true});
             context.commit("setHistoryAllocations", allocations.data);

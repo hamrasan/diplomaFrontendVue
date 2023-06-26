@@ -120,7 +120,7 @@ router.beforeEach(async (to, from) => {
         }
     }
     if(to.meta.hasRoleProjectManager === true && to.meta.hasRoleTeamLeader === true){
-        if (store.getters.hasRoleProjectManager() !== to.meta.hasRoleProjectManager && store.getters.hasRoleTeamLeader() !== to.meta.hasRoleTeamLeader) {
+        if (store.getters.hasRoleProjectManager() !== to.meta.hasRoleProjectManager && store.getters.hasRoleTeamLeader() !== to.meta.hasRoleTeamLeader && !store.getters.hasRoleAdmin()) {
             return {
                 name: 'home',
                 replace: true
@@ -128,7 +128,7 @@ router.beforeEach(async (to, from) => {
         }
     }
     else if(to.meta.hasRoleTeamLeader === true && to.meta.hasRoleResourceManager === true){
-        if (store.getters.hasRoleTeamLeader() !== to.meta.hasRoleTeamLeader && store.getters.hasRoleResourceManager() !== to.meta.hasRoleResourceManager) {
+        if (store.getters.hasRoleTeamLeader() !== to.meta.hasRoleTeamLeader && store.getters.hasRoleResourceManager() !== to.meta.hasRoleResourceManager && !store.getters.hasRoleAdmin()) {
             return {
                 name: 'home',
                 replace: true
@@ -136,7 +136,7 @@ router.beforeEach(async (to, from) => {
         }
     }
     else if(to.meta.hasRoleProjectManager != null){
-        if (store.getters.hasRoleProjectManager() !== to.meta.hasRoleProjectManager) {
+        if (store.getters.hasRoleProjectManager() !== to.meta.hasRoleProjectManager && !store.getters.hasRoleAdmin()) {
             return {
                 name: 'home',
                 replace: true
@@ -144,7 +144,7 @@ router.beforeEach(async (to, from) => {
         }
     }
     else if(to.meta.hasRoleTeamLeader != null){
-        if (store.getters.hasRoleTeamLeader() !== to.meta.hasRoleTeamLeader) {
+        if (store.getters.hasRoleTeamLeader() !== to.meta.hasRoleTeamLeader && !store.getters.hasRoleAdmin()) {
             return {
                 name: 'home',
                 replace: true
@@ -152,7 +152,7 @@ router.beforeEach(async (to, from) => {
         }
     }
     else if(to.meta.hasRoleResourceManager != null){
-        if (store.getters.hasRoleResourceManager() !== to.meta.hasRoleResourceManager) {
+        if (store.getters.hasRoleResourceManager() !== to.meta.hasRoleResourceManager && !store.getters.hasRoleAdmin()) {
             return {
                 name: 'home',
                 replace: true

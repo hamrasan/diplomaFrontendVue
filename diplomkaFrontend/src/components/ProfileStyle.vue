@@ -130,6 +130,9 @@
                         }
                     })
                 }
+                else if(this.currentUser?.teamRole.name === 'System Administrator'){
+                    returnString = true;
+                }
                 return returnString;
             },
             edit() {

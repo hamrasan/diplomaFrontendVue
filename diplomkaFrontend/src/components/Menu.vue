@@ -16,7 +16,8 @@
                         <router-link v-if="isLogged && isTeamLeader" to="/resource-view-team" class="nav-link"><span>Graf rolí</span></router-link>
                         <router-link v-if="isLogged" to="/projects" class="nav-link dropdown-item bg-dark"><span>Projekty</span></router-link>
                         <router-link v-if="isTeamLeader || isAdmin" to="/my-projects" class="nav-link dropdown-item bg-dark"><span>Alokace na projekty</span></router-link>
-                        <router-link v-if="isTeamLeader || isAdmin" to="/my-teams" class="nav-link dropdown-item bg-dark"><span>Moje tými</span></router-link>
+                        <router-link v-if="isTeamLeader" to="/my-teams" class="nav-link dropdown-item bg-dark"><span>Moje tými</span></router-link>
+                        <router-link v-if="isAdmin" to="/my-teams" class="nav-link dropdown-item bg-dark"><span>Tými</span></router-link>
                         <router-link v-if="isTeamLeader || isProjectManager || isAdmin" to="/history" class="nav-link dropdown-item bg-dark"><span>Historie alokací</span></router-link>
                         <router-link v-if="!isLogged" to="/login" class="nav-link dropdown-item bg-dark"><span>Přihlášení</span></router-link>
                         <a v-if="isLogged" class="nav-link dropdown-item bg-dark" @click="logout"><span>Odhlášení</span></a>
@@ -36,14 +37,20 @@
                 <li class="nav-item" v-if="isLogged && isTeamLeader">
                     <router-link to="/resource-view-team" class="nav-link"><span>Graf rolí</span></router-link>
                 </li>
+                <li class="nav-item" v-if="isLogged && isAdmin">
+                    <router-link to="/resource-view-team" class="nav-link"><span>Graf rolí týmy</span></router-link>
+                </li>
                 <li class="nav-item" v-if="isLogged">
                     <router-link to="/projects" class="nav-link"><span>Projekty</span></router-link>
                 </li>
                 <li class="nav-item" v-if="isTeamLeader || isAdmin">
                     <router-link to="/my-projects" class="nav-link"><span>Alokace na projekty</span></router-link>
                 </li>
-                <li class="nav-item" v-if="isTeamLeader  || isAdmin">
+                <li class="nav-item" v-if="isTeamLeader">
                     <router-link to="/my-teams" class="nav-link"><span>Moje týmy</span></router-link>
+                </li>
+                <li class="nav-item" v-if="isAdmin">
+                    <router-link to="/my-teams" class="nav-link"><span>Týmy</span></router-link>
                 </li>
                 <li class="nav-item" v-if="isTeamLeader || isProjectManager || isAdmin">
                     <router-link to="/history" class="nav-link"><span>Historie alokací</span></router-link>

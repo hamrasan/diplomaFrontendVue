@@ -42,6 +42,9 @@
                 if(this.user.teamRole.name === 'Team Leader'){
                     this.$store.dispatch("team/fetchTeamsByLeader", this.user.id);
                 }
+                else if(this.user.teamRole.name === 'System Administrator'){
+                    this.$store.dispatch("team/fetchAll");
+                }
             }
         },
         methods: {

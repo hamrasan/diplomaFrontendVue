@@ -42,7 +42,10 @@
         },
         created() {
             if(this.user){
-                this.$store.dispatch("project/fetchAllocations", this.user.id);
+                if(this.user.teamRole.name === 'System Administrator'){
+                    this.$store.dispatch("project/fetchAllAllocations");
+                }
+                else this.$store.dispatch("project/fetchAllocations", this.user.id);
                 this.$store.dispatch("project/fetchProjects");
             }
         },

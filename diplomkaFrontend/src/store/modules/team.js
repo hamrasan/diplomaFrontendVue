@@ -42,6 +42,13 @@ export default {
         }
     },
     actions: {
+        async fetchAll(context) {
+            const teams = await axios.get("http://localhost:8080/team", {withCredentials: true}).catch( function (error){
+                    router.push({name: 'login'});
+                }
+            );
+            context.commit("setTeams", teams.data);
+        },
         async fetchTeamsByLeader(context, teamLeaderId) {
             const teams = await axios.get("http://localhost:8080/team/leader/" + teamLeaderId, {withCredentials: true}).catch( function (error){
                     router.push({name: 'login'});

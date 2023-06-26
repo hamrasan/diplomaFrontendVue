@@ -23,15 +23,6 @@
         </div>
     </div>
 
-<!--    <div v-if="this.project.allocationDto != null && this.project.allocationDto.status !== 'ESTABLISHED'">-->
-<!--        <div class="d-flex align-items-center flex-column alert alert-dark mt-4" v-if="this.project.allocationDto.sourceAllocations">-->
-<!--            <div class="font-weight-bold">ALOKACE ZDROJŮ:</div>-->
-<!--            <ul v-for="source in this.project.allocationDto.sourceAllocations">-->
-<!--                <li>{{source.md + "MD - " + source.assigned.firstName + " " + source.assigned.lastName + " ( " + source.teamRole.name + " ) - "}} <span class="text-danger">{{toCzStatus(source.status)}} </span></li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </div>-->
-
     <div class="d-flex justify-content-center flex-column mt-4" v-if="this.project.releases">
         <h3 class="font-weight-bold">Releasy v projektu:</h3>
         <div v-for="release in releasesOrdered(this.project.releases) " class="border border-2 rounded mb-3">
@@ -42,16 +33,16 @@
             <div class="text-center alert alert-dark mb-0 mt-1" v-if="release.allocationDto == null && history_date(release.releaseEndDate)">
                 Release uplynul
             </div>
-            <div class="text-center" v-if=" release.allocationDto == null && !history_date(release.releaseEndDate) && this.isProjectManager">
+            <div class="text-center" v-if=" release.allocationDto == null && !history_date(release.releaseEndDate) && (this.isProjectManager || this.isAdmin)">
                 <button class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('rezervace', release)">
                     Vytvořit rezervaci
                 </button>
             </div>
             <div class="text-center" v-if="release.allocationDto && release.allocationDto.status === 'ESTABLISHED'">
-                <button v-if="this.isTeamLeader" class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('alokace', release)">
+                <button v-if="this.isTeamLeader || this.isAdmin" class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('alokace', release)">
                     Vytvořit alokaci
                 </button>
-                <span v-if="!this.isTeamLeader" class="text-danger"> {{toCzStatus(release.allocationDto.status, format_date(release.allocationDto.reservationDate))}} </span>
+                <span v-if="!this.isTeamLeader && !this.isAdmin" class="text-danger"> {{toCzStatus(release.allocationDto.status, format_date(release.allocationDto.reservationDate))}} </span>
             </div>
 
             <div v-if="release.allocationDto != null && release.allocationDto.status !== 'ESTABLISHED'">
@@ -97,6 +88,9 @@
             },
             isTeamLeader() {
                 return this.$store.getters.hasRoleTeamLeader();
+            },
+            isAdmin() {
+                return this.$store.getters.hasRoleAdmin();
             }
         },
         created(){
