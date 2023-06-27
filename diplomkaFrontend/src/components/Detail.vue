@@ -42,10 +42,12 @@
                 <button v-if="this.isTeamLeader || this.isAdmin" class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('alokace', release)">
                     Vytvořit alokaci
                 </button>
-                <button v-if="this.isProjectManager || this.isAdmin" class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('rezervace', release)">
-                    Upravit rezervaci
-                </button>
-<!--                <span v-if="!this.isTeamLeader && !this.isAdmin" class="text-danger"> {{toCzStatus(release.allocationDto.status, format_date(release.allocationDto.reservationDate))}} </span>-->
+                <span v-if="!this.isTeamLeader && !this.isAdmin" class="text-danger"> {{toCzStatus(release.allocationDto.status, format_date(release.allocationDto.reservationDate))}} </span>
+                <div>
+                    <button v-if="this.isProjectManager || this.isAdmin" class="rounded border py-1 yellowColor text-dark col-1" @click="modalOpen('rezervace', release)">
+                        Upravit rezervaci
+                    </button>
+                </div>
             </div>
 
             <div v-if="release.allocationDto != null && release.allocationDto.status !== 'ESTABLISHED'">
