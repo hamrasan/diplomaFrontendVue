@@ -73,12 +73,14 @@ export default {
             const allocations = await axios.get("http://localhost:8080/project/sourceAllocations/history", {withCredentials: true});
             context.commit("setHistoryAllocations", allocations.data);
         },
-        // async saveReservation(context, {reservations, projectId}) {
-        //      const project = await axios.post("http://localhost:8080/project/reservation/" + projectId, {
-        //         reservations: reservations
-        //     },{withCredentials: true});
-        //     context.commit("setProjectDetail", project.data);
-        // },
+        async updateReservation(context, {reservations, projectId, releaseId, allocationId}) {
+             const project = await axios.post("http://localhost:8080/project/reservation/" + projectId, {
+                reservations: reservations,
+                 releaseId: releaseId,
+                 allocationId: allocationId
+            },{withCredentials: true});
+            context.commit("setProjectDetail", project.data);
+        },
         async saveReservationRelease(context, {reservations, projectId, releaseId}) {
             const project = await axios.post("http://localhost:8080/project/reservation/" + projectId + "/release/" + releaseId, {
                 reservations: reservations

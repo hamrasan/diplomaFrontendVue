@@ -177,12 +177,16 @@
                         projectId: this.project.id,
                         releaseId: this.release.id
                     });
-                }
-                else {
-                    this.$store.dispatch("project/saveReservation", {
-                        reservations: this.reservations,
-                        projectId: this.project.id
-                    });
+
+                    if(this.release.allocationDto !== null && this.release.allocationDto !== undefined) {
+                        console.log(this.release.allocationDto);
+                        this.$store.dispatch("project/updateReservation", {
+                            reservations: this.reservations,
+                            projectId: this.project.id,
+                            releaseId: this.release.id,
+                            allocationId: this.release.allocationDto.id
+                        });
+                    }
                 }
                 this.$store.dispatch("project/fetchProjects");
                 this.closeModal();
@@ -230,8 +234,23 @@
             // }
              if(this.release != null && this.release.allocationDto != null && this.release.allocationDto.requirements != null){
                 for (let i = 0; i < this.release.allocationDto.requirements.length; i++) {
-                    this.requirements.push(JSON.parse(JSON.stringify(this.release.allocationDto.requirements[i])));
-                }
+                     this.requirements.push(JSON.parse(JSON.stringify(this.release.allocationDto.requirements[i])));
+                 }
+
+                 for (let i = 0; i < this.release.allocationDto.requirements.length; i++) {
+                     let res = {
+                         md: this.release.allocationDto.requirements[i].md,
+                         role: this.release.allocationDto.requirements[i].teamRole.name,
+                     };
+                     if(i===0){
+                         this.reservations = [
+                             (JSON.parse(JSON.stringify(res)))
+                         ];
+                     }
+                     else {
+                         this.reservations.push(JSON.parse(JSON.stringify(res)));
+                     }
+                 }
                 for (let i = 0; i < this.release.allocationDto.sourceAllocations.length; i++) {
                     this.allocations.push(JSON.parse(JSON.stringify(this.release.allocationDto.sourceAllocations[i])));
                 }
