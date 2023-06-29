@@ -1,11 +1,11 @@
 <template>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center" v-if="this.isAdmin">
         <div class="mb-3">
             <label for="formFile" class="btn ml-2 px-3 py-2 rounded border yellowColor text-dark">
                 + Import rolí <input class="form-control ml-2 px-3 py-2 rounded border yellowColor text-dark" type="file" id="formFile" @change="uploadFile" hidden>
             </label>
         </div>
-        <div class="mb-3 mx-2">
+        <div class="mb-3 mx-2" v-if="this.isAdmin">
             <label for="formFileEmp" class="btn ml-2 px-3 py-2 rounded border yellowColor text-dark">
                 + Import zaměstnanců <input class="form-control ml-2 px-3 py-2 rounded border yellowColor text-dark" type="file" id="formFileEmp" @change="uploadFileEmpl" hidden>
             </label>
@@ -38,6 +38,9 @@
             employeeList() {
                 return this.$store.state.employee.employees;
             },
+            isAdmin() {
+                return this.$store.getters.hasRoleAdmin();
+            }
         },
         created() {
             this.$store.dispatch("employee/fetchEmployees");
